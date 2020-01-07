@@ -1,0 +1,3 @@
+option(
+    'first-boot-set-mac', type: 'feature', description: 'Set MAC address on first boot.',
+)
