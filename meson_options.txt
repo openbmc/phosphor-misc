@@ -1,3 +1,6 @@
 option(
     'first-boot-set-mac', type: 'feature', description: 'Set MAC address on first boot.',
 )
+option(
+    'first-boot-set-hostname', type: 'feature', description: 'Set hostname on first boot.',
+)
