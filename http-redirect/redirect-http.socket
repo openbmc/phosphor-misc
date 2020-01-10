@@ -1,0 +1,12 @@
+[Unit]
+Description=Redirect HTTP to HTTPS
+
+[Socket]
+ListenStream=80
+Accept=yes
+
+[Service]
+ExecStart=/usr/bin/awk -f /usr/bin/redirect.awk
+
+[Install]
+WantedBy=sockets.target
