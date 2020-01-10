@@ -1,0 +1,6 @@
+[Unit]
+Description=Redirect HTTP to HTTPS Per-connection
+
+[Service]
+ExecStart=/usr/bin/awk -f /usr/bin/http-redirect.awk
+StandardInput=socket

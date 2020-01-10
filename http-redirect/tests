@@ -1,0 +1,104 @@
+#!/bin/sh -e
+
+set -e
+
+TMPFILE="out.$$"
+URLFILE="urls.$$"
+# TRACEFILE="/dev/tty"
+
+# create temp files
+rm -f $TMPFILE $URLFILE && touch $TMPFILE &&
+trap "rm ./$TMPFILE ./$URLFILE" 0 || exit 2
+echo "/over/the/rainbow /over/the/rainbow" > $URLFILE
+
+# build up the command line
+# for mawk, add -Wi or -W interactive to avoid buffered read on fifo
+overrides="-v urlfile=$URLFILE -f add-urls.awk -v tracefile=$TRACEFILE"
+command="awk -f ./http-redirect.awk $overrides"
+
+
+# remember the CR in your expect
+
+test="1 test absolute URI"
+expect='^location: https://somewhere.example.com/over/the/rainbow.$'
+$command << HERE > $TMPFILE
+GET http://somewhere.example.com/over/the/rainbow HTTP/1.1
+Host: elsewhere.example
+
+HERE
+
+if grep -is "$expect" $TMPFILE
+then
+ echo PASS $test
+else
+ echo FAIL $test
+ echo "Expected to find >'$expect'< in :"
+ cat $TMPFILE
+ false
+fi
+
+test="2 Test no absolute-path in URI"
+expect='^location: https://somewhere.example/.$'
+$command << HERE > $TMPFILE
+GET http://somewhere.example HTTP/1.1
+Host: elsewhere.example
+
+HERE
+
+if grep -is "$expect" $TMPFILE
+then
+ echo PASS $test
+else
+ echo FAIL $test
+ echo "Expected to find >'$expect'< in :"
+ cat $TMPFILE
+ false
+fi
+
+
+test="3 test generic 1.1 client"
+expect='^location: https://elsewhere.example/over/the/rainbow.$'
+$command << HERE > $TMPFILE
+GET /over/the/rainbow HTTP/1.1
+Host: elsewhere.example
+
+HERE
+
+if grep -is "$expect" $TMPFILE
+then
+ echo PASS $test
+else
+ echo FAIL $test
+ echo "Expected to find >'$expect'< in :"
+ cat $TMPFILE
+ false
+fi
+
+
+
+test="4 test generic 1.1 client"
+expect='^location: https://somewhere.com/over/the/rainbow.$'
+$command << HERE > $TMPFILE
+GET /over/the/rainbow HTTP/1.1
+not-host: elsewhere.example
+x-host: elsewhere.example.com
+ ( comment )
+host: somewhere.com
+host2: else.where.example.com
+
+HERE
+
+
+if grep -is "$expect" $TMPFILE
+then
+ echo PASS $test
+else
+ echo FAIL $test
+ echo "Expected to find >'$expect'< in :"
+ cat $TMPFILE
+ false
+fi
+
+
+
+echo all tests passed
