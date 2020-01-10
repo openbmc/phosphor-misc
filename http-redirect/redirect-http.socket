@@ -1,0 +1,9 @@
+[Unit]
+Description=Redirect HTTP to HTTPS socket
+
+[Socket]
+ListenStream=80
+Accept=yes
+
+[Install]
+WantedBy=sockets.target

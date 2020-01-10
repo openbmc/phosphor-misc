@@ -1,0 +1,96 @@
+#!/bin/sh -e
+
+set -e
+
+command='awk -f ./redirect.awk'
+TMPFILE="out.$$"
+
+rm -f $TMPFILE && touch $TMPFILE && 
+trap "rm ./$TMPFILE" 0 || exit 2
+
+
+# remember the CR in your expect
+
+test="1 test absolute URI"
+expect='^location: https://somewhere.example.com/over/the/rainbow.$'
+$command << HERE > $TMPFILE
+GET http://somewhere.example.com/over/the/rainbow HTTP/1.1
+Host: elsewhere.example
+
+HERE
+
+if grep -is "$expect" $TMPFILE
+then
+ echo PASS $test
+else
+ echo FAIL $test
+ echo "Expected to find >'$expect'< in :"
+ cat $TMPFILE
+ false
+fi
+
+test="2 Test no absolute-path in URI"
+expect='^location: https://somewhere.example/.$'
+$command << HERE > $TMPFILE
+GET http://somewhere.example HTTP/1.1
+Host: elsewhere.example
+
+HERE
+
+if grep -is "$expect" $TMPFILE
+then
+ echo PASS $test
+else
+ echo FAIL $test
+ echo "Expected to find >'$expect'< in :"
+ cat $TMPFILE
+ false
+fi
+
+
+test="3 test generic 1.1 client"
+expect='^location: https://elsewhere.example/over/the/rainbow.$'
+$command << HERE > $TMPFILE
+GET /over/the/rainbow HTTP/1.1
+Host: elsewhere.example
+
+HERE
+
+if grep -is "$expect" $TMPFILE
+then
+ echo PASS $test
+else
+ echo FAIL $test
+ echo "Expected to find >'$expect'< in :"
+ cat $TMPFILE
+ false
+fi
+
+
+
+test="4 test generic 1.1 client"
+expect='^location: https://somewhere.com/over/the/rainbow.$'
+$command << HERE > $TMPFILE
+GET /over/the/rainbow HTTP/1.1
+not-host: elsewhere.example
+x-host: elsewhere.example.com
+ ( comment )
+host: somewhere.com
+host2: else.where.example.com
+
+HERE
+
+
+if grep -is "$expect" $TMPFILE
+then
+ echo PASS $test
+else
+ echo FAIL $test
+ echo "Expected to find >'$expect'< in :"
+ cat $TMPFILE
+ false
+fi
+
+
+
+echo all tests passed
