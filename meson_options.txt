@@ -4,3 +4,6 @@ option(
 option(
     'first-boot-set-hostname', type: 'feature', description: 'Set hostname on first boot.',
 )
+option(
+    'htt-_redirect', type: 'feature', description: 'Redirect http traffic to https.',
+)
