@@ -5,3 +5,4 @@ project(
 )
 
 subdir('firstboot')
+subdir('http-redirect')
