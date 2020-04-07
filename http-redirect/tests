@@ -16,6 +16,7 @@ echo "/over/the/rainbow /over/the/rainbow" > $URLFILE
 overrides="-v urlfile=$URLFILE -f add-urls.awk -v tracefile=$TRACEFILE"
 command="awk -f ./http-redirect.awk $overrides"
 
+awk -f ./test.awk -v "resultfile=$TMPFILE" -v "tracefile=$TRACEFILE"
 
 # remember the CR in your expect
 
