@@ -6,3 +6,4 @@ project(
 
 subdir('firstboot')
 subdir('http-redirect')
+subdir('usb-ctrl')
