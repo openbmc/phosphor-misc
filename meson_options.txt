@@ -7,3 +7,6 @@ option(
 option(
     'http-redirect', type: 'feature', description: 'Redirect http traffic to https.',
 )
+option(
+    'usb-ctrl', type: 'feature', description: 'Control USB gadget devices',
+)
