@@ -31,6 +31,21 @@ cleanup_image()
 	rmdir "$stormnt"
 }
 
+ecm()
+{
+	set -x
+	local name="$1"
+	local on="$2"
+	if [ "$on" = "on" ]; then
+		usb_insert $1 ecm
+	elif [ "$on" = "off" ]; then
+		usb_eject $1 ecm
+	else
+		echo "Unknown ecm command"
+		usage
+	fi
+}
+
 GADGET_BASE=/sys/kernel/config/usb_gadget
 
 which_dev()
@@ -48,8 +63,22 @@ which_dev()
 
 usb_ms_insert()
 {
+	usb_insert $1 mass_storage $2
+}
+
+usb_ms_eject()
+{
+	usb_eject $1 mass_storage
+}
+
+## $1: device name, e.g. usb0, usb1
+## $2: device type defined in kernel, e.g. mass_storage, ecm
+## $3: optional storage file, e.g. /dev/nbd1, /tmp/boot.iso
+usb_insert()
+{
 	local name="$1"
-	local storage="$2"
+	local dev_type="$2"
+	local storage="$3"
 
 	if [ -d $GADGET_BASE/$name ]; then
 		echo "device $name already exists" >&2
@@ -58,40 +87,45 @@ usb_ms_insert()
 	mkdir $GADGET_BASE/$name
 	cd $GADGET_BASE/$name
 
-	echo 0x1d6b > idVendor  # Linux Foundation
+	echo 0x1d6b > idVendor	# Linux Foundation
 	echo 0x0105 > idProduct # FunctionFS Gadget
 	mkdir strings/0x409
 	local machineid=$(cat /etc/machine-id)
-	local data="OpenBMC USB mass storage gadget device serial number"
+	local data="OpenBMC USB gadget device serial number"
 	local serial=$( echo -n "${machineid}${data}${machineid}" | \
 		sha256sum | cut -b 0-12 )
 	echo $serial > strings/0x409/serialnumber
 	echo OpenBMC > strings/0x409/manufacturer
-	echo "OpenBMC Mass Storage" > strings/0x409/product
+	echo "OpenBMC USB Device" > strings/0x409/product
 
 	mkdir configs/c.1
-	mkdir functions/mass_storage.$name
-	echo $storage > functions/mass_storage.$name/lun.0/file
-	echo 0 > functions/mass_storage.$name/lun.0/removable
+	mkdir functions/${dev_type}.$name
+	if [ ${dev_type} = "mass_storage" ]; then
+		echo $storage > functions/${dev_type}.$name/lun.0/file
+		echo 0 > functions/${dev_type}.$name/lun.0/removable
+	fi
 	mkdir configs/c.1/strings/0x409
 
 	echo "Conf 1" > configs/c.1/strings/0x409/configuration
 	echo 120 > configs/c.1/MaxPower
-	ln -s functions/mass_storage.$name configs/c.1
+	ln -s functions/${dev_type}.$name configs/c.1
 	local dev=$(which_dev)
 	echo $dev > UDC
 }
 
-usb_ms_eject()
+## $1: device name, e.g. usb0, usb1
+## $2: device type defined in kernel, e.g. mass_storage, ecm
+usb_eject()
 {
 	local name="$1"
+	local dev_type="$2"
 
 	echo '' > $GADGET_BASE/$name/UDC
 
-	rm -f $GADGET_BASE/$name/configs/c.1/mass_storage.$name
+	rm -f $GADGET_BASE/$name/configs/c.1/${dev_type}.$name
 	rmdir $GADGET_BASE/$name/configs/c.1/strings/0x409
 	rmdir $GADGET_BASE/$name/configs/c.1
-	rmdir $GADGET_BASE/$name/functions/mass_storage.$name
+	rmdir $GADGET_BASE/$name/functions/${dev_type}.$name
 	rmdir $GADGET_BASE/$name/strings/0x409
 	rmdir $GADGET_BASE/$name
 }
@@ -104,6 +138,7 @@ usage()
 	echo "       $0 eject <name>"
 	echo "       $0 mount <file> <mnt>"
 	echo "       $0 cleanup <file> <mnt>"
+	echo "       $0 ecm <name> <on|off>"
 	exit 1
 }
 
@@ -128,6 +163,10 @@ case "$1" in
 	cleanup)
 		shift
 		cleanup_image "$@"
+		;;
+	ecm)
+		shift
+		ecm "$@"
 		;;
 	*)
 		usage
