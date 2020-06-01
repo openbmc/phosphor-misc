@@ -1,0 +1,10 @@
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+1: Andrew Jeffery <andrew@aj.id.au>
+Code-Review+1: Joseph Reynolds <joseph-reynolds@charter.net>
+Code-Review+2: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Submitted-by: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Submitted-at: Mon, 01 Jun 2020 21:06:11 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-misc/+/31167
+Project: openbmc/phosphor-misc
+Branch: refs/heads/master
