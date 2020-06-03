@@ -6,10 +6,10 @@ setup_image()
 	local storage="$1"
 	local sz_mb="$2"
 	# create the backing store
-	dd if=/dev/zero of=$storage bs=1M seek=$sz_mb count=0 2>/dev/null
+	dd if=/dev/zero of="$storage" bs=1M seek="$sz_mb" count=0 2>/dev/null
 	# this shows up as 23FC-F676 in /dev/disk/by-uuid
 	local diskid=0x23FCF676
-	mkdosfs -n 'OPENBMC-FW' -i $diskid -I $storage >/dev/null 2>&1
+	mkdosfs -n 'OPENBMC-FW' -i $diskid -I "$storage" >/dev/null 2>&1
 }
 
 mount_image()
@@ -18,7 +18,7 @@ mount_image()
 	local storage="$1"
 	local stormnt="$2"
 	mkdir -p $stormnt || exit 1
-	mount -o loop -t vfat $storage $stormnt
+	mount -o loop -t vfat "$storage" "$stormnt"
 }
 
 cleanup_image()
@@ -35,7 +35,7 @@ GADGET_BASE=/sys/kernel/config/usb_gadget
 
 which_dev()
 {
-	local in_use=$(cat $GADGET_BASE/*/UDC)
+	local in_use="$(cat $GADGET_BASE/*/UDC)"
 	cd /sys/class/udc
 	for D in *; do
 		case "$in_use" in
@@ -51,12 +51,12 @@ usb_ms_insert()
 	local name="$1"
 	local storage="$2"
 
-	if [ -d $GADGET_BASE/$name ]; then
-		echo "device $name already exists" >&2
+	if [ -d $GADGET_BASE/"${name}" ]; then
+		echo "device "${name}" already exists" >&2
 		return 1
 	fi
-	mkdir $GADGET_BASE/$name
-	cd $GADGET_BASE/$name
+	mkdir $GADGET_BASE/"${name}"
+	cd $GADGET_BASE/"${name}"
 
 	echo 0x1d6b > idVendor  # Linux Foundation
 	echo 0x0105 > idProduct # FunctionFS Gadget
@@ -70,14 +70,14 @@ usb_ms_insert()
 	echo "OpenBMC Mass Storage" > strings/0x409/product
 
 	mkdir configs/c.1
-	mkdir functions/mass_storage.$name
-	echo $storage > functions/mass_storage.$name/lun.0/file
-	echo 0 > functions/mass_storage.$name/lun.0/removable
+	mkdir functions/mass_storage."${name}"
+	echo "${storage}" > functions/mass_storage."${name}"/lun.0/file
+	echo 0 > functions/mass_storage."${name}"/lun.0/removable
 	mkdir configs/c.1/strings/0x409
 
 	echo "Conf 1" > configs/c.1/strings/0x409/configuration
 	echo 120 > configs/c.1/MaxPower
-	ln -s functions/mass_storage.$name configs/c.1
+	ln -s functions/mass_storage."${name}" configs/c.1
 	local dev=$(which_dev)
 	echo $dev > UDC
 }
@@ -86,14 +86,14 @@ usb_ms_eject()
 {
 	local name="$1"
 
-	echo '' > $GADGET_BASE/$name/UDC
+	echo '' > $GADGET_BASE/"${name}"/UDC
 
-	rm -f $GADGET_BASE/$name/configs/c.1/mass_storage.$name
-	rmdir $GADGET_BASE/$name/configs/c.1/strings/0x409
-	rmdir $GADGET_BASE/$name/configs/c.1
-	rmdir $GADGET_BASE/$name/functions/mass_storage.$name
-	rmdir $GADGET_BASE/$name/strings/0x409
-	rmdir $GADGET_BASE/$name
+	rm -f $GADGET_BASE/"${name}"/configs/c.1/mass_storage."${name}"
+	rmdir $GADGET_BASE/"${name}"/configs/c.1/strings/0x409
+	rmdir $GADGET_BASE/"${name}"/configs/c.1
+	rmdir $GADGET_BASE/"${name}"/functions/mass_storage."${name}"
+	rmdir $GADGET_BASE/"${name}"/strings/0x409
+	rmdir $GADGET_BASE/"${name}"
 }
 
 usage()
