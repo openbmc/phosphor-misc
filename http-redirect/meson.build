@@ -8,18 +8,18 @@ if redirect.found()
         install_dir: get_option('bindir'),
     )
 
-    configure_file(
-        input: 'http-redirect.socket',
-        output: 'http-redirct.socket',
-        copy: true,
-        install_dir:
-            redirect.get_pkgconfig_variable('systemdsystemunitdir'),
-    )
-    configure_file(
-        input: 'http-redirect@.service',
-        output: 'http-redirct@.service',
-        copy: true,
-        install_dir:
-            redirect.get_pkgconfig_variable('systemdsystemunitdir'),
-    )
+    unit_files = [
+        'http-redirect.socket',
+        'http-redirect@.service'
+    ]
+
+    foreach unit : unit_files
+        configure_file(
+            input: unit,
+            output: unit,
+            copy: true,
+            install_dir:
+                redirect.get_pkgconfig_variable('systemdsystemunitdir'),
+        )
+    endforeach
 endif
