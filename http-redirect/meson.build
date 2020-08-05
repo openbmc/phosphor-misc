@@ -10,14 +10,14 @@ if redirect.found()
 
     configure_file(
         input: 'http-redirect.socket',
-        output: 'http-redirct.socket',
+        output: 'http-redirect.socket',
         copy: true,
         install_dir:
             redirect.get_pkgconfig_variable('systemdsystemunitdir'),
     )
     configure_file(
         input: 'http-redirect@.service',
-        output: 'http-redirct@.service',
+        output: 'http-redirect@.service',
         copy: true,
         install_dir:
             redirect.get_pkgconfig_variable('systemdsystemunitdir'),
