@@ -63,7 +63,7 @@ which_dev()
 
 usb_ms_insert()
 {
-	usb_insert "$1" mass_storage "$2"
+	usb_insert "$1" mass_storage "$2" "$3"
 }
 
 usb_ms_eject()
@@ -71,14 +71,63 @@ usb_ms_eject()
 	usb_eject "$1" mass_storage
 }
 
+## $1: 	device syspath to provide usb-gadget configure,
+## 		e.g. functions/mass_storage.usb0/lun.0/
+##
+## $2:  usb gadget interface type, e.g. usb|hdd|cdrom.
+##		using 'HDD' as default
+usb_set_interface_type()
+{
+	local usb_gadget_syspath="$1"
+	local inerface_type="${2:-hdd}"
+
+	if [ ! -d ${usb_gadget_syspath} ]; then
+		echo "device syspath "${usb_gadget_syspath}" not exists" >&2
+		return 1
+	fi
+
+	# default interface type to `hdd`
+	local removable="1"
+	local ro="0"
+	local cdrom="0"
+
+	case "${inerface_type}" in
+		hdd)
+			removable=0
+			ro=0
+			cdrom=0
+			;;
+		usb)
+			removable=1
+			ro=0
+			cdrom=0
+			;;
+		cdrom)
+			removable=1
+			ro=1
+			cdrom=1
+			;;
+		*)
+			echo "no mass-storage interface type specified" >&2
+			echo "use 'HDD' as default" >&2
+			;;
+	esac
+
+    echo $removable > ${usb_gadget_syspath}removable
+    echo $ro > ${usb_gadget_syspath}ro
+    echo $cdrom > ${usb_gadget_syspath}cdrom
+}
+
 ## $1: device name, e.g. usb0, usb1
 ## $2: device type defined in kernel, e.g. mass_storage, ecm
 ## $3: optional storage file, e.g. /dev/nbd1, /tmp/boot.iso
+## $4: optional mass storage interface type, e.g. usb|hdd|cdrom. using 'HDD' as default
 usb_insert()
 {
 	local name="$1"
 	local dev_type="$2"
 	local storage="$3"
+	local interface_type="$4"
 
 	if [ -d $GADGET_BASE/"${name}" ]; then
 		echo "device "${name}" already exists" >&2
@@ -102,7 +151,7 @@ usb_insert()
 	mkdir functions/"${dev_type}"."${name}"
 	if [ "${dev_type}" = "mass_storage" ]; then
 		echo "${storage}" > functions/"${dev_type}"."${name}"/lun.0/file
-		echo 0 > functions/"${dev_type}"."${name}"/lun.0/removable
+		usb_set_interface_type functions/"${dev_type}"."${name}"/lun.0/ "${interface_type}"
 	fi
 	mkdir configs/c.1/strings/0x409
 
@@ -134,7 +183,7 @@ usage()
 {
 	echo "Usage: $0 <action> ..."
 	echo "       $0 setup <file> <sizeMB>"
-	echo "       $0 insert <name> <file>"
+	echo "       $0 insert <name> <file> [<type=usb|hdd|cdrom>]"
 	echo "       $0 eject <name>"
 	echo "       $0 mount <file> <mnt>"
 	echo "       $0 cleanup <file> <mnt>"
