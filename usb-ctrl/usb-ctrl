@@ -63,7 +63,7 @@ which_dev()
 
 usb_ms_insert()
 {
-	usb_insert "$1" mass_storage "$2"
+	usb_insert "$1" mass_storage "$2" "$3"
 }
 
 usb_ms_eject()
@@ -71,17 +71,76 @@ usb_ms_eject()
 	usb_eject "$1" mass_storage
 }
 
+## $1: 	device syspath to provide usb-gadget configure,
+## 		e.g. functions/mass_storage.usb0/lun.0/
+##
+## $2:  optional usb gadget interface type, e.g. usb|usb-ro|hdd|cdrom.
+##		if $2 not specified or illegal, then using 'usb-ro' as default
+usb_set_interface_type()
+{
+	local usb_gadget_syspath="$1"
+	local interface_type="${2:-'usb-ro'}"
+
+	# defining target variables to configure interface type
+	local removable=
+	local ro=
+	local cdrom=
+
+	if [ ! -d ${usb_gadget_syspath} ]; then
+		echo "Device syspath ${usb_gadget_syspath} does not exist" >&2
+		return 1
+	fi
+
+	case "${interface_type}" in
+		hdd)
+			removable=0
+			ro=0
+			cdrom=0
+			;;
+		usb)
+			removable=1
+			ro=0
+			cdrom=0
+			;;
+
+		cdrom)
+			removable=1
+			ro=1
+			cdrom=1
+			;;
+		usb-ro)
+			removable=1
+			ro=1
+			cdrom=0
+			;;
+		*)
+			echo "No mass-storage interface type specified or illegal" >&2
+			echo "Configuring interface type to 'usb-ro'" >&2
+			removable=1
+			ro=1
+			cdrom=0
+			;;
+	esac
+
+    echo $removable > ${usb_gadget_syspath}removable
+    echo $ro > ${usb_gadget_syspath}ro
+    echo $cdrom > ${usb_gadget_syspath}cdrom
+}
+
 ## $1: device name, e.g. usb0, usb1
 ## $2: device type defined in kernel, e.g. mass_storage, ecm
 ## $3: optional storage file, e.g. /dev/nbd1, /tmp/boot.iso
+## $4: optional mass storage interface type, e.g. usb|usb-ro|hdd|cdrom.
+##     if interface type not specified then using 'usb-ro' as default
 usb_insert()
 {
 	local name="$1"
 	local dev_type="$2"
 	local storage="$3"
+	local interface_type="${4:-'usb-ro'}"
 
 	if [ -d $GADGET_BASE/"${name}" ]; then
-		echo "device "${name}" already exists" >&2
+		echo "Device ${name} already exists" >&2
 		return 1
 	fi
 	mkdir $GADGET_BASE/"${name}"
@@ -101,8 +160,9 @@ usb_insert()
 	mkdir configs/c.1
 	mkdir functions/"${dev_type}"."${name}"
 	if [ "${dev_type}" = "mass_storage" ]; then
-		echo "${storage}" > functions/"${dev_type}"."${name}"/lun.0/file
-		echo 0 > functions/"${dev_type}"."${name}"/lun.0/removable
+		echo "${storage}" > "functions/${dev_type}.${name}/lun.0/file"
+		usb_set_interface_type \
+			"functions/${dev_type}.${name}/lun.0/" "${interface_type}"
 	fi
 	mkdir configs/c.1/strings/0x409
 
@@ -134,7 +194,7 @@ usage()
 {
 	echo "Usage: $0 <action> ..."
 	echo "       $0 setup <file> <sizeMB>"
-	echo "       $0 insert <name> <file>"
+	echo "       $0 insert <name> <file> [<type=usb|usb-ro|hdd|cdrom>]"
 	echo "       $0 eject <name>"
 	echo "       $0 mount <file> <mnt>"
 	echo "       $0 cleanup <file> <mnt>"
