@@ -86,7 +86,7 @@ usb_set_interface_type()
 	local ro=
 	local cdrom=
 
-	if [ ! -d ${usb_gadget_syspath} ]; then
+	if [ ! -d "${usb_gadget_syspath}" ]; then
 		echo "Device syspath ${usb_gadget_syspath} does not exist" >&2
 		return 1
 	fi
@@ -122,9 +122,9 @@ usb_set_interface_type()
 			;;
 	esac
 
-    echo $removable > ${usb_gadget_syspath}removable
-    echo $ro > ${usb_gadget_syspath}ro
-    echo $cdrom > ${usb_gadget_syspath}cdrom
+    echo $removable > "${usb_gadget_syspath}"removable
+    echo $ro > "${usb_gadget_syspath}"ro
+    echo $cdrom > "${usb_gadget_syspath}"cdrom
 }
 
 ## $1: device name, e.g. usb0, usb1
