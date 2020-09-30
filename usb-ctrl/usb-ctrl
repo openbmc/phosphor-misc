@@ -122,9 +122,9 @@ usb_set_interface_type()
 			;;
 	esac
 
-    echo $removable > "${usb_gadget_syspath}"removable
-    echo $ro > "${usb_gadget_syspath}"ro
-    echo $cdrom > "${usb_gadget_syspath}"cdrom
+    echo $removable > "${usb_gadget_syspath}/removable"
+    echo $ro > "${usb_gadget_syspath}/ro"
+    echo $cdrom > "${usb_gadget_syspath}/cdrom"
 }
 
 ## $1: device name, e.g. usb0, usb1
@@ -139,12 +139,12 @@ usb_insert()
 	local storage="$3"
 	local interface_type="${4:-'usb-ro'}"
 
-	if [ -d $GADGET_BASE/"${name}" ]; then
+	if [ -d "$GADGET_BASE/${name}" ]; then
 		echo "Device ${name} already exists" >&2
 		return 1
 	fi
-	mkdir $GADGET_BASE/"${name}"
-	cd $GADGET_BASE/"${name}"
+	mkdir "$GADGET_BASE/${name}"
+	cd "$GADGET_BASE/${name}"
 
 	echo 0x1d6b > idVendor	# Linux Foundation
 	echo 0x0105 > idProduct # FunctionFS Gadget
@@ -157,18 +157,19 @@ usb_insert()
 	echo OpenBMC > strings/0x409/manufacturer
 	echo "OpenBMC USB Device" > strings/0x409/product
 
+	gadget_function="functions/${dev_type}.${name}"
 	mkdir configs/c.1
-	mkdir functions/"${dev_type}"."${name}"
+	mkdir "${gadget_function}"
 	if [ "${dev_type}" = "mass_storage" ]; then
-		echo "${storage}" > "functions/${dev_type}.${name}/lun.0/file"
 		usb_set_interface_type \
-			"functions/${dev_type}.${name}/lun.0/" "${interface_type}"
+			"${gadget_function}/lun.0" "${interface_type}"
+		echo "${storage}" > "${gadget_function}/lun.0/file"
 	fi
 	mkdir configs/c.1/strings/0x409
 
 	echo "Conf 1" > configs/c.1/strings/0x409/configuration
 	echo 120 > configs/c.1/MaxPower
-	ln -s functions/"${dev_type}"."${name}" configs/c.1
+	ln -s "${gadget_function}" configs/c.1
 	local dev=$(which_dev)
 	echo $dev > UDC
 }
@@ -180,14 +181,14 @@ usb_eject()
 	local name="$1"
 	local dev_type="$2"
 
-	echo '' > $GADGET_BASE/"${name}"/UDC
+	echo '' > "$GADGET_BASE/${name}/UDC"
 
-	rm -f $GADGET_BASE/"${name}"/configs/c.1/"${dev_type}"."${name}"
-	rmdir $GADGET_BASE/"${name}"/configs/c.1/strings/0x409
-	rmdir $GADGET_BASE/"${name}"/configs/c.1
-	rmdir $GADGET_BASE/"${name}"/functions/"${dev_type}"."${name}"
-	rmdir $GADGET_BASE/"${name}"/strings/0x409
-	rmdir $GADGET_BASE/"${name}"
+	rm -f "$GADGET_BASE/${name}/configs/c.1/${dev_type}.${name}"
+	rmdir "$GADGET_BASE/${name}/configs/c.1/strings/0x409"
+	rmdir "$GADGET_BASE/${name}/configs/c.1"
+	rmdir "$GADGET_BASE/${name}/functions/${dev_type}.${name}"
+	rmdir "$GADGET_BASE/${name}/strings/0x409"
+	rmdir "$GADGET_BASE/${name}"
 }
 
 usage()
