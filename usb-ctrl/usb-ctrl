@@ -36,8 +36,10 @@ ecm()
 	set -x
 	local name="$1"
 	local on="$2"
+	local bmc_mac="$3"
+	local host_mac="$4"
 	if [ "$on" = "on" ]; then
-		usb_insert "${name}" ecm
+		usb_insert "${name}" ecm "${bmc_mac}" "${host_mac}"
 	elif [ "$on" = "off" ]; then
 		usb_eject "${name}" ecm
 	else
@@ -129,15 +131,21 @@ usb_set_interface_type()
 
 ## $1: device name, e.g. usb0, usb1
 ## $2: device type defined in kernel, e.g. mass_storage, ecm
-## $3: optional storage file, e.g. /dev/nbd1, /tmp/boot.iso
-## $4: optional mass storage interface type, e.g. usb|usb-ro|hdd|cdrom.
-##     if interface type not specified then using 'usb-ro' as default
+## $3: Type specific
+##   For mass_storage, it is the storage file, e.g. /dev/nbd1, /tmp/boot.iso
+##   For ecm, it is the optional MAC address for the BMC (default a random MAC).
+## $4: Type specific
+##   For mass_storage, it is the interface type, e.g. usb|usb-ro|hdd|cdrom.
+##     If interface type not specified or unknown then default to 'usb-ro'
+##   For ecm, it is the optional MAC address for the Host (default a random MAC)
 usb_insert()
 {
 	local name="$1"
 	local dev_type="$2"
-	local storage="$3"
+	local opt="$3"
 	local interface_type="${4:-'usb-ro'}"
+	local bmc_mac="$3"
+	local host_mac="$4"
 
 	if [ -d "$GADGET_BASE/${name}" ]; then
 		echo "Device ${name} already exists" >&2
@@ -163,7 +171,10 @@ usb_insert()
 	if [ "${dev_type}" = "mass_storage" ]; then
 		usb_set_interface_type \
 			"${gadget_function}/lun.0" "${interface_type}"
-		echo "${storage}" > "${gadget_function}/lun.0/file"
+		echo "${opt}" > "${gadget_function}/lun.0/file"
+	elif [ "${dev_type}" = "ecm" ]; then
+		echo "${bmc_mac}" > "${gadget_function}/dev_addr"
+		echo "${host_mac}" > "${gadget_function}/host_addr"
 	fi
 	mkdir configs/c.1/strings/0x409
 
@@ -199,7 +210,7 @@ usage()
 	echo "       $0 eject <name>"
 	echo "       $0 mount <file> <mnt>"
 	echo "       $0 cleanup <file> <mnt>"
-	echo "       $0 ecm <name> <on|off>"
+	echo "       $0 ecm <name> <on|off> [<bmc-mac-address|.> [<host-mac-address>]]"
 	exit 1
 }
 
