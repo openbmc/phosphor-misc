@@ -36,9 +36,10 @@ ecm()
 	set -x
 	local name="$1"
 	local on="$2"
-	local mac="$3"
+	local bmc_mac="$3"
+	local host_mac="$4"
 	if [ "$on" = "on" ]; then
-		usb_insert "${name}" ecm ${mac}
+		usb_insert "${name}" ecm ${bmc_mac} ${host_mac}
 	elif [ "$on" = "off" ]; then
 		usb_eject "${name}" ecm
 	else
@@ -133,14 +134,19 @@ usb_set_interface_type()
 ## $3: optional.
 ##   For mass_storage, it is storage file, e.g. /dev/nbd1, /tmp/boot.iso
 ##   For ecm, it is optional mac address of BMC.
-## $4: optional mass storage interface type, e.g. usb|usb-ro|hdd|cdrom.
-##     if interface type not specified then using 'usb-ro' as default
+## $4: optional.
+##   For mass_storage, it is the mass storage interface type, e.g. usb|usb-ro|hdd|cdrom.
+##     If interface type not specified then using 'usb-ro' as default
+##   For ecm, it is optional mac address of host.
 usb_insert()
 {
 	local name="$1"
 	local dev_type="$2"
-	local opt="$3"
-	local interface_type="${4:-'usb-ro'}"
+	local opt3="$3"
+	local opt4="$4"
+	if [ "${dev_type}" = "mass_storage" ]; then
+		opt4="${4:-'usb-ro'}"
+	fi
 
 	if [ -d "$GADGET_BASE/${name}" ]; then
 		echo "Device ${name} already exists" >&2
@@ -165,10 +171,11 @@ usb_insert()
 	mkdir "${gadget_function}"
 	if [ "${dev_type}" = "mass_storage" ]; then
 		usb_set_interface_type \
-			"${gadget_function}/lun.0" "${interface_type}"
-		echo "${opt}" > "${gadget_function}/lun.0/file"
-	elif [ "${dev_type}" = "ecm" ] && [ -n "$mac" ]; then
-		echo ${opt} > "${gadget_function}/dev_addr"
+			"${gadget_function}/lun.0" "${opt4}"
+		echo "${opt3}" > "${gadget_function}/lun.0/file"
+	elif [ "${dev_type}" = "ecm" ] && [ -n "${opt3}" ] && [ -n "${opt4}" ]; then
+		echo ${opt3} > "${gadget_function}/dev_addr"
+		echo ${opt4} > "${gadget_function}/host_addr"
 	fi
 	mkdir configs/c.1/strings/0x409
 
@@ -204,7 +211,7 @@ usage()
 	echo "       $0 eject <name>"
 	echo "       $0 mount <file> <mnt>"
 	echo "       $0 cleanup <file> <mnt>"
-	echo "       $0 ecm <name> <on|off> [mac-address]"
+	echo "       $0 ecm <name> <on|off> [bmc-mac-address host-mac-address]"
 	exit 1
 }
 
