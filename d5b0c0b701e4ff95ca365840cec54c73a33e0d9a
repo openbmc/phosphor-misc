@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fc31388d_89633439",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-04-19T05:42:20Z",
+      "side": 1,
+      "message": "Yup, but I do not want to break the previous logic.\nSo if user sets bmc\u0027s mac address but does not set host\u0027s mac address, the opt4 here becomes usb-ro, and it will fail on line 175.\nI intend to accept this behavior, unless there is a better solution.",
+      "parentUuid": "7c2457d6_6f3983de",
+      "revId": "d5b0c0b701e4ff95ca365840cec54c73a33e0d9a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "796226b1_e5786b5d",
         "filename": "usb-ctrl/usb-ctrl",
         "patchSetId": 1
