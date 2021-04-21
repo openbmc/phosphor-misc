@@ -73,6 +73,24 @@
     },
     {
       "key": {
+        "uuid": "6ba4bb0d_b06d056c",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-04-21T07:12:53Z",
+      "side": 1,
+      "message": "\u003e Hmm surprised we don\u0027t have set -e in this script.\n\nI think it may be on purpose, with -e any failure will make the script to quit, then the status could be in the middle of the init/de-init, it may cause the script failure on following calls.\n\n\u003e You might want to declare separate functions\n\nYup, separated functions make sense.",
+      "parentUuid": "882d4bd1_a97b0276",
+      "revId": "d5b0c0b701e4ff95ca365840cec54c73a33e0d9a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "796226b1_e5786b5d",
         "filename": "usb-ctrl/usb-ctrl",
         "patchSetId": 1
