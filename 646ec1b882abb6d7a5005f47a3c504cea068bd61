@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cd76cfc1_5e4d432d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-04-27T09:05:17Z",
+      "side": 1,
+      "message": "The commit message should stand on its own.\n\nAdd support to set the ecm network Host MAC Address",
+      "revId": "646ec1b882abb6d7a5005f47a3c504cea068bd61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c01d6f5_b2acbcf9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-04-27T09:05:17Z",
+      "side": 1,
+      "message": "I did not test this.",
+      "revId": "646ec1b882abb6d7a5005f47a3c504cea068bd61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a63140fe_20a28841",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-04-27T09:05:17Z",
+      "side": 1,
+      "message": "Ooops missed the trailing \u003e\n\n@andrewg this seems to have missed the SOB checker",
+      "revId": "646ec1b882abb6d7a5005f47a3c504cea068bd61",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
