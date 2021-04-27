@@ -116,8 +116,8 @@ usb_set_interface_type()
 			cdrom=0
 			;;
 		*)
-			echo "No mass-storage interface type specified or illegal" >&2
-			echo "Configuring interface type to 'usb-ro'" >&2
+			echo "Unknown mass-storage interface type '${interface_type}' specified" >&2
+			echo "Configuring interface type as 'usb-ro'" >&2
 			removable=1
 			ro=1
 			cdrom=0
@@ -132,18 +132,18 @@ usb_set_interface_type()
 ## $1: device name, e.g. usb0, usb1
 ## $2: device type defined in kernel, e.g. mass_storage, ecm
 ## $3: Type specific
-##   For mass_storage, it is the storage file, e.g. /dev/nbd1, /tmp/boot.iso
+##   For mass_storage, it is the backing storage, e.g. /dev/nbd1, /tmp/boot.iso
 ##   For ecm, it is the optional MAC address for the BMC (default a random MAC).
 ## $4: Type specific
 ##   For mass_storage, it is the interface type, e.g. usb|usb-ro|hdd|cdrom.
-##     If interface type not specified or unknown then default to 'usb-ro'
+##     If interface type not specified or unknown it will default to 'usb-ro'
 ##   For ecm, it is the optional MAC address for the Host (default a random MAC)
 usb_insert()
 {
 	local name="$1"
 	local dev_type="$2"
-	local opt="$3"
-	local interface_type="${4:-'usb-ro'}"
+	local storage="$3"
+	local intf_type="$4"
 	local bmc_mac="$3"
 	local host_mac="$4"
 
@@ -169,9 +169,9 @@ usb_insert()
 	mkdir configs/c.1
 	mkdir "${gadget_function}"
 	if [ "${dev_type}" = "mass_storage" ]; then
-		usb_set_interface_type \
-			"${gadget_function}/lun.0" "${interface_type}"
-		echo "${opt}" > "${gadget_function}/lun.0/file"
+		# usb_set_interface_type handles default and unknown type
+		usb_set_interface_type "${gadget_function}/lun.0" "${intf_type}"
+		echo "${storage}" > "${gadget_function}/lun.0/file"
 	elif [ "${dev_type}" = "ecm" ]; then
 		echo "${bmc_mac}" > "${gadget_function}/dev_addr"
 		echo "${host_mac}" > "${gadget_function}/host_addr"
