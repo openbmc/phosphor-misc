@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "81285e48_7546e63d",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-04-27T08:53:06Z",
+      "side": 1,
+      "message": "Need quotes around \"${mac}\"",
+      "revId": "6f46c4e974faf7ccc5525cfb4b6912ecc2635308",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b69dcd7d_aa3fcf71",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-04-27T08:53:06Z",
+      "side": 1,
+      "message": "While this looks good here, its an option not optional for mass storage.\n\nMy proposed changeset in the following reverts this.",
+      "revId": "6f46c4e974faf7ccc5525cfb4b6912ecc2635308",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1de57a45_c889e978",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-04-27T08:53:06Z",
+      "side": 1,
+      "message": "\"$mac\" doesn\u0027t exist in this function and is not using the ${var} style.\nIt happens to be used in the caller as a local that is still valid here.\n\nAlso, we don\u0027t need to check it because any invalid write will result in\na random MAC assigned from my reading of the setting function.",
+      "revId": "6f46c4e974faf7ccc5525cfb4b6912ecc2635308",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ff462d8_36f95920",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-04-27T08:53:06Z",
+      "side": 1,
+      "message": "The convention is non-literal text is in \u003cangle-brackets\u003e like insert above",
+      "revId": "6f46c4e974faf7ccc5525cfb4b6912ecc2635308",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
