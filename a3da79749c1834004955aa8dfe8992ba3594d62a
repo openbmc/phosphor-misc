@@ -121,6 +121,24 @@
     },
     {
       "key": {
+        "uuid": "12f570d2_de8054ea",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-04-27T09:55:33Z",
+      "side": 1,
+      "message": "The referenced behaviour is here:\n\nhttps://github.com/openbmc/linux/blob/d538d632fb2046278ff3457994d64d43ee2901c7/drivers/usb/gadget/function/u_ether.c#L692",
+      "parentUuid": "d9dfa56c_64d925fc",
+      "revId": "a3da79749c1834004955aa8dfe8992ba3594d62a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a0f90a9f_2f145aa5",
         "filename": "usb-ctrl/usb-ctrl",
         "patchSetId": 3
