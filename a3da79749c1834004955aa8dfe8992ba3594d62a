@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cd077cb9_4c805e38",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-04-27T08:47:24Z",
+      "side": 1,
+      "message": "We should double quote the args here",
+      "revId": "a3da79749c1834004955aa8dfe8992ba3594d62a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d738435_12595e30",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-04-27T08:47:24Z",
+      "side": 1,
+      "message": "the optional mac address\nor \noptionally the mac address",
+      "revId": "a3da79749c1834004955aa8dfe8992ba3594d62a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "189d5b89_246e260a",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-04-27T08:47:24Z",
+      "side": 1,
+      "message": "This became a long line, but I see that \"mass storage\" was repeated the second could be eliminated without loss of clarity IMO.   Or see alternative below.",
+      "revId": "a3da79749c1834004955aa8dfe8992ba3594d62a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "920a2779_7e5a89c0",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-04-27T08:47:24Z",
+      "side": 1,
+      "message": "then \u0027usb-ro\u0027 is used by default\n(yes I know it was unchanged text, just a nit / cleanup while here)",
+      "revId": "a3da79749c1834004955aa8dfe8992ba3594d62a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bac747eb_f48c1e4f",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-04-27T08:47:24Z",
+      "side": 1,
+      "message": "similar to dev_addr.\n\nAs an alternative, would it be more clear to list the type and then $3 and $4\n\nFor Mass Storage,\n  $3: file\n  $4: optional interface_type (usb|usb-ro|hdd|cdrom) defaults to usb-ro\nFor ecm,\n  $3: optional device MAC address\n  $4: optional host MAC address",
+      "revId": "a3da79749c1834004955aa8dfe8992ba3594d62a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f7495870_a5b4305c",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-04-27T08:47:24Z",
+      "side": 1,
+      "message": "Thinking a bit about this, $3 is not optional for usb storage.  \nAn alternative grouping is to create additional variables that are interface specific.\nand since it is only assignment we don\u0027t have to qualify by the interface type.\n\n\nlocal file \u003d \"$3\"\nlocal interface_type \u003d \"${4:-usb-ro}\"\nlocal dev_addr \u003d \"$3\"\nlocal host_addr \u003d \"$4\"",
+      "revId": "a3da79749c1834004955aa8dfe8992ba3594d62a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9dfa56c_64d925fc",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-04-27T08:47:24Z",
+      "side": 1,
+      "message": "Why should we need to specify both if we only care about one?\ninstead of \u0026\u0026 here nest an if for each line.   \nOr just write them unconditionally, we will get -EINVAL and a random MAC generated (I checked).\n\nThe variable names would change with my suggestion above.",
+      "revId": "a3da79749c1834004955aa8dfe8992ba3594d62a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0f90a9f_2f145aa5",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2021-04-27T08:47:24Z",
+      "side": 1,
+      "message": "Our conventionabove is to put variables in \u003cangle-brackets\u003e\nchanging both to be optional but still positionable (see changeset 4)",
+      "revId": "a3da79749c1834004955aa8dfe8992ba3594d62a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
