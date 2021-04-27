@@ -144,6 +144,24 @@
     },
     {
       "key": {
+        "uuid": "1544a6c4_7303e2fd",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 1
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-04-27T03:02:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6e25398_107f847a",
+      "revId": "d5b0c0b701e4ff95ca365840cec54c73a33e0d9a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "796226b1_e5786b5d",
         "filename": "usb-ctrl/usb-ctrl",
         "patchSetId": 1
@@ -158,6 +176,24 @@
       "revId": "d5b0c0b701e4ff95ca365840cec54c73a33e0d9a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a8fed485_85bb3020",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-04-27T03:02:48Z",
+      "side": 1,
+      "message": "Already discussed in the above comment.",
+      "parentUuid": "796226b1_e5786b5d",
+      "revId": "d5b0c0b701e4ff95ca365840cec54c73a33e0d9a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
