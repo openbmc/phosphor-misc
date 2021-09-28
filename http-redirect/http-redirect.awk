@@ -144,7 +144,7 @@ function find_host()
 	trace("prioritized host is >" host "<")
 
 	# A very relaxed check for domainlabel or IPv4.
-	if (host !~ /^[0-9a-zA-Z.-]+$/)
+	if (host !~ /^[\[\]:0-9a-zA-Z.-]+$/)
 		respond_error(400)
 	trace("host passed regex")
 
@@ -193,7 +193,7 @@ function bad_uric(URI)
 	gsub(/%[0-9a-fA-F][0-9a-fA-F]/, "", URI)
 
 	# fail if remaining characters are not in (mark alpha numeric reserved)
-	if (URI ~ /[^-_.!~*'()a-zA-Z0-9";\/?:@&=+$,]/)
+	if (URI ~ /[^-_.!~*'()a-zA-Z0-9";\/?:@&=+$,\[\]]/)
 		return 1
 	return 0
 }
@@ -271,7 +271,7 @@ function split_url_components(url, components)
 		}
 		components["user"] = userinfo;
 	}
-	if (match(url, ":")) {
+	if (match(url, ":") && !match(url, "^[][]")) {
 		# port is numeric or empty
 		components["port"] = substr(url, RSTART + 1)
 		url = substr(url, 1, RSTART - 1)

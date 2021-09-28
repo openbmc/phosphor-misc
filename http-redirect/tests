@@ -101,5 +101,22 @@ else
 fi
 
 
+test="5 test IPv6 URI"
+expect='^location: https://\[fe80::1\]/over/the/rainbow.$'
+$command << HERE > $TMPFILE
+GET http://[fe80::1]/over/the/rainbow HTTP/1.1
+Host: elsewhere.example
+
+HERE
+
+if grep -is "$expect" $TMPFILE
+then
+ echo PASS $test
+else
+ echo FAIL $test
+ echo "Expected to find >'$expect'< in :"
+ cat $TMPFILE
+ false
+fi
 
 echo all tests passed
