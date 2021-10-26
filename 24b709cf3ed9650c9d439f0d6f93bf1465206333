@@ -16,6 +16,24 @@
       "revId": "24b709cf3ed9650c9d439f0d6f93bf1465206333",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a31020a1_166e817d",
+        "filename": "OWNERS",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-10-26T19:42:56Z",
+      "side": 1,
+      "message": "Hello Brad! My Discord nickname is \u0027IK\u0027.\n\nHi Igor!  Thanks.\n\nI\u0027ve written you in the #general discord channel, but I\u0027ve put it here again.\nSorry for the delay.\n\n40 minutes is not a delay :-)  No problemo, and thanks!",
+      "parentUuid": "dc38817d_34e079d5",
+      "revId": "24b709cf3ed9650c9d439f0d6f93bf1465206333",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
