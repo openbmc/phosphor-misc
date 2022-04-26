@@ -31,19 +31,20 @@ cleanup_image()
 	rmdir "$stormnt"
 }
 
-ecm()
+network()
 {
 	set -x
-	local name="$1"
-	local on="$2"
-	local bmc_mac="$3"
-	local host_mac="$4"
+	local type="$1"
+	local name="$2"
+	local on="$3"
+	local bmc_mac="$4"
+	local host_mac="$5"
 	if [ "$on" = "on" ]; then
-		usb_insert "${name}" ecm "${bmc_mac}" "${host_mac}"
+		usb_insert "${name}" "${type}" "${bmc_mac}" "${host_mac}"
 	elif [ "$on" = "off" ]; then
-		usb_eject "${name}" ecm
+		usb_eject "${name}" "${type}"
 	else
-		echo "Unknown ecm command"
+		echo "Unknown ${type} command"
 		usage
 	fi
 }
@@ -130,14 +131,16 @@ usb_set_interface_type()
 }
 
 ## $1: device name, e.g. usb0, usb1
-## $2: device type defined in kernel, e.g. mass_storage, ecm
+## $2: device type defined in kernel, e.g. mass_storage, ecm, eem, rndis
 ## $3: Type specific
 ##   For mass_storage, it is the backing storage, e.g. /dev/nbd1, /tmp/boot.iso
-##   For ecm, it is the optional MAC address for the BMC (default a random MAC).
+##   For ecm, eem and rndis,
+##             it is the optional MAC address for the BMC (default a random MAC)
 ## $4: Type specific
 ##   For mass_storage, it is the interface type, e.g. usb|usb-ro|hdd|cdrom.
 ##     If interface type not specified or unknown it will default to 'usb-ro'
-##   For ecm, it is the optional MAC address for the Host (default a random MAC)
+##   For ecm, eem and rndis,
+##            it is the optional MAC address for the Host (default a random MAC)
 usb_insert()
 {
 	local name="$1"
@@ -168,14 +171,17 @@ usb_insert()
 	gadget_function="functions/${dev_type}.${name}"
 	mkdir configs/c.1
 	mkdir "${gadget_function}"
-	if [ "${dev_type}" = "mass_storage" ]; then
-		# usb_set_interface_type handles default and unknown type
-		usb_set_interface_type "${gadget_function}/lun.0" "${intf_type}"
-		echo "${storage}" > "${gadget_function}/lun.0/file"
-	elif [ "${dev_type}" = "ecm" ]; then
-		echo "${bmc_mac}" > "${gadget_function}/dev_addr"
-		echo "${host_mac}" > "${gadget_function}/host_addr"
-	fi
+	case "${dev_type}" in
+		mass_storage)
+			# usb_set_interface_type handles default and unknown type
+			usb_set_interface_type "${gadget_function}/lun.0" "${intf_type}"
+			echo "${storage}" > "${gadget_function}/lun.0/file"
+			;;
+		ecm|eem|rndis)
+			echo "${bmc_mac}" > "${gadget_function}/dev_addr"
+			echo "${host_mac}" > "${gadget_function}/host_addr"
+			;;
+	esac
 	mkdir configs/c.1/strings/0x409
 
 	echo "Conf 1" > configs/c.1/strings/0x409/configuration
@@ -186,7 +192,7 @@ usb_insert()
 }
 
 ## $1: device name, e.g. usb0, usb1
-## $2: device type defined in kernel, e.g. mass_storage, ecm
+## $2: device type defined in kernel, e.g. mass_storage, ecm, eem, rndis
 usb_eject()
 {
 	local name="$1"
@@ -211,6 +217,8 @@ usage()
 	echo "       $0 mount <file> <mnt>"
 	echo "       $0 cleanup <file> <mnt>"
 	echo "       $0 ecm <name> <on|off> [<bmc-mac-address|.> [<host-mac-address>]]"
+	echo "       $0 eem <name> <on|off> [<bmc-mac-address|.> [<host-mac-address>]]"
+	echo "       $0 rndis <name> <on|off> [<bmc-mac-address|.> [<host-mac-address>]]"
 	exit 1
 }
 
@@ -236,9 +244,8 @@ case "$1" in
 		shift
 		cleanup_image "$@"
 		;;
-	ecm)
-		shift
-		ecm "$@"
+	ecm|eem|rndis)
+		network "$@"
 		;;
 	*)
 		usage
