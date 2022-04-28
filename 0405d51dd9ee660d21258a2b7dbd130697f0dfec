@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "625b9e4f_484ea8c1",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1001397
+      },
+      "writtenOn": "2022-04-28T23:06:06Z",
+      "side": 1,
+      "message": "Right, that\u0027s better for readability. Done. Thanks!",
+      "parentUuid": "7d46c872_6dca90d5",
+      "revId": "0405d51dd9ee660d21258a2b7dbd130697f0dfec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff1eb998_41ac3f38",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-04-28T22:32:43Z",
       "side": 1,
       "message": "same",
+      "revId": "0405d51dd9ee660d21258a2b7dbd130697f0dfec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35b36826_25ce3550",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1001397
+      },
+      "writtenOn": "2022-04-28T23:06:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff1eb998_41ac3f38",
       "revId": "0405d51dd9ee660d21258a2b7dbd130697f0dfec",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24441e37_5ced78d0",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1001397
+      },
+      "writtenOn": "2022-04-28T23:06:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5dabf50b_57f91fbd",
+      "revId": "0405d51dd9ee660d21258a2b7dbd130697f0dfec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d1939e3_6f763717",
@@ -69,6 +123,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "432d0cbc_e33f36d6",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1001397
+      },
+      "writtenOn": "2022-04-28T23:06:06Z",
+      "side": 1,
+      "message": "SC2166: Prefer [ p ] || [ q ] as [ p -o q ] is not well defined.\n\nshellcheck recommends using of || instead of -o but I changed like you suggested.",
+      "parentUuid": "1d1939e3_6f763717",
+      "revId": "0405d51dd9ee660d21258a2b7dbd130697f0dfec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a89a1a88_ac9e9c83",
@@ -82,6 +154,24 @@
       "writtenOn": "2022-04-28T22:32:43Z",
       "side": 1,
       "message": "don\u0027t think the space separation helps and request it be removed",
+      "revId": "0405d51dd9ee660d21258a2b7dbd130697f0dfec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b43b095f_885ff479",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1001397
+      },
+      "writtenOn": "2022-04-28T23:06:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a89a1a88_ac9e9c83",
       "revId": "0405d51dd9ee660d21258a2b7dbd130697f0dfec",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
