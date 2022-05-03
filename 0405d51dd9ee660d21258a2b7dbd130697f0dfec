@@ -141,6 +141,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74393467_0e7746bc",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2022-05-03T15:30:46Z",
+      "side": 1,
+      "message": "I now see the rationale.  I believe using \u003d\u003d and quoted strings should be relatively safe.  I guess another option would be a case statement like we did for the argument parsing.",
+      "parentUuid": "432d0cbc_e33f36d6",
+      "revId": "0405d51dd9ee660d21258a2b7dbd130697f0dfec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a89a1a88_ac9e9c83",
