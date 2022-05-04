@@ -2,7 +2,6 @@
 
 setup_image()
 {
-	set -x
 	local storage="$1"
 	local sz_mb="$2"
 	# create the backing store
@@ -14,7 +13,6 @@ setup_image()
 
 mount_image()
 {
-	set -x
 	local storage="$1"
 	local stormnt="$2"
 	mkdir -p $stormnt || exit 1
@@ -23,7 +21,6 @@ mount_image()
 
 cleanup_image()
 {
-	set -x
 	local storage="$1"
 	local stormnt="$2"
 	umount -f "$stormnt"
@@ -33,7 +30,6 @@ cleanup_image()
 
 ecm()
 {
-	set -x
 	local name="$1"
 	local on="$2"
 	local bmc_mac="$3"
