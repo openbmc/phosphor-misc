@@ -33,6 +33,24 @@
       "message": "looks good and doesn\u0027t add spell check issues\n\n@stwcx @andrewg can you help understand the build defines fail and what the next steps are?\n\ndata0/jenkins/workspace/ci-repository/openbmc/phosphor-misc \u003e meson configure build -Db_sanitize\u003daddress,undefined -Db_lundef\u003dfalse \n\nERROR: Unknown options: \"b_lundef, b_sanitize\"\nTraceback (most recent call last):\n  File \"/data0/jenkins/workspace/ci-repository/openbmc/unit-test.py\", line 1272, in \u003cmodule\u003e\n    build_and_install(UNIT_TEST_PKG, True)\n  File \"/data0/jenkins/workspace/ci-repository/openbmc/unit-test.py\", line 307, in build_and_install",
       "revId": "1c247878ebc7c1ee0f24f503fa7c0bd6b0b80332",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cbcc398_6398bf77",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-04T17:48:36Z",
+      "side": 1,
+      "message": "Probably been so long since someone committed a change to this repo that new checks in CI are finding existing issues unrelated to this change.",
+      "parentUuid": "3cf237cf_91dda296",
+      "revId": "1c247878ebc7c1ee0f24f503fa7c0bd6b0b80332",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
