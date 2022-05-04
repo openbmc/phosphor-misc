@@ -16,6 +16,40 @@
       "message": "Fixed the CI build issue by adding a dummy language setting. Unfortunately, meson doesn\u0027t support shell script as its supported language so I added \u0027c\u0027 instead.",
       "revId": "55159b12368629744a5f1bfd95b5136eb136c067",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dc8c74a_309a278b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2022-05-04T23:35:28Z",
+      "side": 1,
+      "message": "while most of our code is C or C++ there are some packages that are not\nhowever I\u0027m not sure how to get ",
+      "revId": "55159b12368629744a5f1bfd95b5136eb136c067",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd3071e2_1f7490d4",
+        "filename": "meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2022-05-04T23:35:28Z",
+      "side": 1,
+      "message": "So this is ha hack because our build assumes all meson projects accept C or C++ sanitzer if the host platform does.  Meson supports no language since 0.40.\n\nhttps://mesonbuild.com/Reference-manual_functions.html#project\n\nhttps://github.com/openbmc/openbmc-build-scripts/blob/7d2c27fdaa6be5aff0fa75b407a68b625f043bf0/scripts/unit-test.py#L996",
+      "revId": "55159b12368629744a5f1bfd95b5136eb136c067",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
