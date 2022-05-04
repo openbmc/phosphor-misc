@@ -87,6 +87,24 @@
       "parentUuid": "df9e47e8_ca5f6d95",
       "revId": "1c247878ebc7c1ee0f24f503fa7c0bd6b0b80332",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53389f08_23c3dd8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001397
+      },
+      "writtenOn": "2022-05-04T20:23:22Z",
+      "side": 1,
+      "message": "I added \u0027c\u0027 as a dummy language setting and it passed the CI build.",
+      "parentUuid": "63584e06_a4ccc4f1",
+      "revId": "1c247878ebc7c1ee0f24f503fa7c0bd6b0b80332",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
