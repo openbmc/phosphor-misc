@@ -51,6 +51,24 @@
       "parentUuid": "3cf237cf_91dda296",
       "revId": "1c247878ebc7c1ee0f24f503fa7c0bd6b0b80332",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df9e47e8_ca5f6d95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-05-04T18:26:28Z",
+      "side": 1,
+      "message": "We\u0027ve seen a few repos with this issue, I think, or maybe it is just phosphor-misc, but I swear I\u0027ve pointed to this elsewhere as well:\n\n\n\u003e /data0/jenkins/workspace/ci-repository/openbmc/phosphor-misc \u003e meson configure build -Db_sanitize\u003daddress,undefined -Db_lundef\u003dfalse \n\u003e ERROR: Unknown options: \"b_lundef, b_sanitize\"\n\nI know newer meson is now being strict about unknown options, but I don\u0027t know why some repos fail and some don\u0027t.  Must be something subtle in the meson.build.",
+      "parentUuid": "6cbcc398_6398bf77",
+      "revId": "1c247878ebc7c1ee0f24f503fa7c0bd6b0b80332",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
