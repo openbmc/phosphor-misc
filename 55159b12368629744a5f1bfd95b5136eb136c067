@@ -86,6 +86,24 @@
       "parentUuid": "e3711a62_bbeb3465",
       "revId": "55159b12368629744a5f1bfd95b5136eb136c067",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07f70f1f_3e514eb2",
+        "filename": "meson.build",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1001397
+      },
+      "writtenOn": "2022-08-15T20:06:46Z",
+      "side": 1,
+      "message": "Removed the fake language setting. CI build error is not caused by this change and fixing the CI build error is out of scope of this change.",
+      "parentUuid": "7c8eaddf_78f97e31",
+      "revId": "55159b12368629744a5f1bfd95b5136eb136c067",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
