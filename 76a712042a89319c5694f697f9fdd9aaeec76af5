@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b098a53f_ffa21f23",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2022-10-07T09:42:38Z",
+      "side": 1,
+      "message": "Sorry for the slow response.   I just looked up the POSIX spec for awk.\n\nalso for reference I tested in mawk gawk and a third possibly BusyBox awk and found different issues with each.",
+      "revId": "76a712042a89319c5694f697f9fdd9aaeec76af5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dcfa13a_a0828b05",
+        "filename": "http-redirect/http-redirect.awk",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2022-10-07T09:42:38Z",
+      "side": 1,
+      "message": "upon review the proposed syntax is undefined according to POSIX\n\n\nin addition, although the existing syntax is loose the rules for the square brackets in the host name are quite strict vs the other characters and may warrant stricter testing eg recognize a ipv6 host address or a general ipv4 or domain (as the only invalid sequence is repeated or beginning period)",
+      "revId": "76a712042a89319c5694f697f9fdd9aaeec76af5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b4eef8f_c1510e24",
+        "filename": "http-redirect/http-redirect.awk",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2022-10-07T09:42:38Z",
+      "side": 1,
+      "message": "again this is undefined according to POSIX\n\nconsider separating the allowed ipv6 from the more general.",
+      "revId": "76a712042a89319c5694f697f9fdd9aaeec76af5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e475542_9597f03c",
+        "filename": "http-redirect/http-redirect.awk",
+        "patchSetId": 1
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2022-10-07T09:42:38Z",
+      "side": 1,
+      "message": "I doubt this is sufficient when ipv6 and a port",
+      "revId": "76a712042a89319c5694f697f9fdd9aaeec76af5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
