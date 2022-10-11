@@ -18,6 +18,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b9b21f2_72dcb54f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2022-10-11T19:15:49Z",
+      "side": 1,
+      "message": "another encounter another comment ",
+      "revId": "76a712042a89319c5694f697f9fdd9aaeec76af5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5dcfa13a_a0828b05",
@@ -65,6 +82,23 @@
       "writtenOn": "2022-10-07T09:42:38Z",
       "side": 1,
       "message": "I doubt this is sufficient when ipv6 and a port",
+      "revId": "76a712042a89319c5694f697f9fdd9aaeec76af5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfd94429_0c21dd34",
+        "filename": "http-redirect/tests",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2022-10-11T19:15:49Z",
+      "side": 1,
+      "message": "this doesn\u0027t check for the host header containing being a direct ipv6 reference",
       "revId": "76a712042a89319c5694f697f9fdd9aaeec76af5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
