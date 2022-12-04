@@ -1,4 +1,4 @@
-#!/bin/sh -eu
+#!/bin/bash -eu
 
 show_error() {
     if [ -n "${JOURNAL_STREAM-}" ]; then
@@ -17,31 +17,25 @@ sync_mac() {
 
     # Get the NETWORK ITEM count
     NETWORK_ITEM_PATH_COUNT=$(busctl --no-pager --verbose call \
-                            ${MAPPER_IFACE} \
-                            ${MAPPER_PATH} \
-                            ${MAPPER_IFACE} \
-                            GetSubTree sias \
-                            ${INVENTORY_PATH} 0 1 ${NETWORK_ITEM_IFACE} \
-                        2>/dev/null | grep ${INVENTORY_PATH} | wc -l || true)
+            ${MAPPER_IFACE} ${MAPPER_PATH} ${MAPPER_IFACE} \
+            GetSubTree sias \
+            ${INVENTORY_PATH} 0 1 ${NETWORK_ITEM_IFACE} \
+        2>/dev/null | grep -c "${INVENTORY_PATH}" || true)
 
-    if [ $NETWORK_ITEM_PATH_COUNT -gt 1 ]; then
+    if [ "$NETWORK_ITEM_PATH_COUNT" -gt 1 ]; then
         # If there are more than 2 NETOWRK ITEM and path must contain $1
         # for finding the right NETWORK ITEM
         NETWORK_ITEM_PATH=$(busctl --no-pager --verbose call \
-                            ${MAPPER_IFACE} \
-                            ${MAPPER_PATH} \
-                            ${MAPPER_IFACE} \
-                            GetSubTree sias \
-                            ${INVENTORY_PATH} 0 1 ${NETWORK_ITEM_IFACE} \
-                        2>/dev/null | grep ${INVENTORY_PATH} | grep $1 || true)
+                ${MAPPER_IFACE} ${MAPPER_PATH} ${MAPPER_IFACE} \
+                GetSubTree sias \
+                ${INVENTORY_PATH} 0 1 ${NETWORK_ITEM_IFACE} \
+            2>/dev/null | grep ${INVENTORY_PATH} | grep "$1" || true)
     else
         NETWORK_ITEM_PATH=$(busctl --no-pager --verbose call \
-                            ${MAPPER_IFACE} \
-                            ${MAPPER_PATH} \
-                            ${MAPPER_IFACE} \
-                            GetSubTree sias \
-                            ${INVENTORY_PATH} 0 1 ${NETWORK_ITEM_IFACE} \
-                        2>/dev/null | grep ${INVENTORY_PATH} || true)
+                ${MAPPER_IFACE} ${MAPPER_PATH} ${MAPPER_IFACE} \
+                GetSubTree sias \
+                ${INVENTORY_PATH} 0 1 ${NETWORK_ITEM_IFACE} \
+            2>/dev/null | grep ${INVENTORY_PATH} || true)
     fi
 
     # '     STRING "/xyz/openbmc_project/inventory/system/chassis/ethernet";'
@@ -49,16 +43,15 @@ sync_mac() {
     NETWORK_ITEM_PATH=${NETWORK_ITEM_PATH%\"*}
 
     NETWORK_ITEM_SERVICE=$(mapper get-service \
-                                ${NETWORK_ITEM_PATH} 2>/dev/null || true)
+        "${NETWORK_ITEM_PATH}" 2>/dev/null || true)
 
     if [[ -z "${NETWORK_ITEM_SERVICE}" ]]; then
         show_error 'No Ethernet interface found in the Inventory. Is VPD EEPROM empty?'
         return
     fi
 
-    MAC_ADDR=$(busctl get-property ${NETWORK_ITEM_SERVICE} \
-                                ${NETWORK_ITEM_PATH} \
-                                ${NETWORK_ITEM_IFACE} MACAddress)
+    MAC_ADDR=$(busctl get-property "${NETWORK_ITEM_SERVICE}" \
+        "${NETWORK_ITEM_PATH}" "${NETWORK_ITEM_IFACE}" MACAddress)
 
     # 's "54:52:01:02:03:04"'
     MAC_ADDR=${MAC_ADDR#*\"}
@@ -66,9 +59,9 @@ sync_mac() {
 
     if [[ -n "${MAC_ADDR}" ]]; then
         busctl set-property xyz.openbmc_project.Network \
-                            /xyz/openbmc_project/network/$1 \
-                            xyz.openbmc_project.Network.MACAddress \
-                            MACAddress s ${MAC_ADDR}
+            "/xyz/openbmc_project/network/$1" \
+            xyz.openbmc_project.Network.MACAddress \
+            MACAddress s "${MAC_ADDR}"
     fi
 }
 
@@ -77,7 +70,7 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-sync_mac $1
+sync_mac "$1"
 
 # Prevent start at next boot time
 mkdir -p "/var/lib/first-boot-set-mac"

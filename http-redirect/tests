@@ -7,6 +7,7 @@ URLFILE="urls.$$"
 # TRACEFILE="/dev/tty"
 
 # create temp files
+# shellcheck disable=SC2064
 rm -f $TMPFILE $URLFILE && touch $TMPFILE &&
 trap "rm ./$TMPFILE ./$URLFILE" 0 || exit 2
 echo "/over/the/rainbow /over/the/rainbow" > $URLFILE
@@ -30,12 +31,12 @@ HERE
 
 if grep -is "$expect" $TMPFILE
 then
- echo PASS $test
+    echo "PASS $test"
 else
- echo FAIL $test
- echo "Expected to find >'$expect'< in :"
- cat $TMPFILE
- false
+    echo "FAIL $test"
+    echo "Expected to find >'$expect'< in :"
+    cat $TMPFILE
+    false
 fi
 
 test="2 Test no absolute-path in URI"
@@ -48,12 +49,12 @@ HERE
 
 if grep -is "$expect" $TMPFILE
 then
- echo PASS $test
+    echo "PASS $test"
 else
- echo FAIL $test
- echo "Expected to find >'$expect'< in :"
- cat $TMPFILE
- false
+    echo "FAIL $test"
+    echo "Expected to find >'$expect'< in :"
+    cat $TMPFILE
+    false
 fi
 
 
@@ -67,12 +68,12 @@ HERE
 
 if grep -is "$expect" $TMPFILE
 then
- echo PASS $test
+    echo "PASS $test"
 else
- echo FAIL $test
- echo "Expected to find >'$expect'< in :"
- cat $TMPFILE
- false
+    echo "FAIL $test"
+    echo "Expected to find >'$expect'< in :"
+    cat $TMPFILE
+    false
 fi
 
 
@@ -92,12 +93,12 @@ HERE
 
 if grep -is "$expect" $TMPFILE
 then
- echo PASS $test
+    echo "PASS $test"
 else
- echo FAIL $test
- echo "Expected to find >'$expect'< in :"
- cat $TMPFILE
- false
+    echo "FAIL $test"
+    echo "Expected to find >'$expect'< in :"
+    cat $TMPFILE
+    false
 fi
 
 
