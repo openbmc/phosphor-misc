@@ -1,77 +1,79 @@
-#!/bin/sh
+#!/bin/bash
+set -e
 
 setup_image()
 {
-	set -x
-	local storage="$1"
-	local sz_mb="$2"
-	# create the backing store
-	dd if=/dev/zero of="$storage" bs=1M seek="$sz_mb" count=0 2>/dev/null
-	# this shows up as 23FC-F676 in /dev/disk/by-uuid
-	local diskid=0x23FCF676
-	mkdosfs -n 'OPENBMC-FW' -i $diskid -I "$storage" >/dev/null 2>&1
+    set -x
+    local storage="$1"
+    local sz_mb="$2"
+    # create the backing store
+    dd if=/dev/zero of="$storage" bs=1M seek="$sz_mb" count=0 2>/dev/null
+    # this shows up as 23FC-F676 in /dev/disk/by-uuid
+    local diskid=0x23FCF676
+    mkdosfs -n 'OPENBMC-FW' -i $diskid -I "$storage" >/dev/null 2>&1
 }
 
 mount_image()
 {
-	set -x
-	local storage="$1"
-	local stormnt="$2"
-	mkdir -p $stormnt || exit 1
-	mount -o loop -t vfat "$storage" "$stormnt"
+    set -x
+    local storage="$1"
+    local stormnt="$2"
+    mkdir -p "$stormnt" || exit 1
+    mount -o loop -t vfat "$storage" "$stormnt"
 }
 
 cleanup_image()
 {
-	set -x
-	local storage="$1"
-	local stormnt="$2"
-	umount -f "$stormnt"
-	rm -f "$storage"
-	rmdir "$stormnt"
+    set -x
+    local storage="$1"
+    local stormnt="$2"
+    umount -f "$stormnt"
+    rm -f "$storage"
+    rmdir "$stormnt"
 }
 
 network()
 {
-	set -x
-	local type="$1"
-	local name="$2"
-	local on="$3"
-	local bmc_mac="$4"
-	local host_mac="$5"
-	if [ "$on" = "on" ]; then
-		usb_insert "${name}" "${type}" "${bmc_mac}" "${host_mac}"
-	elif [ "$on" = "off" ]; then
-		usb_eject "${name}" "${type}"
-	else
-		echo "Unknown ${type} command"
-		usage
-	fi
+    set -x
+    local type="$1"
+    local name="$2"
+    local on="$3"
+    local bmc_mac="$4"
+    local host_mac="$5"
+    if [ "$on" = "on" ]; then
+        usb_insert "${name}" "${type}" "${bmc_mac}" "${host_mac}"
+    elif [ "$on" = "off" ]; then
+        usb_eject "${name}" "${type}"
+    else
+        echo "Unknown ${type} command"
+        usage
+    fi
 }
 
 GADGET_BASE=/sys/kernel/config/usb_gadget
 
 which_dev()
 {
-	local in_use="$(cat $GADGET_BASE/*/UDC)"
-	cd /sys/class/udc
-	for D in *; do
-		case "$in_use" in
-			*"$D"*) ;;
-			*) echo "$D"; return 0;;
-		esac
-	done
-	return 1
+    local in_use
+    in_use="$(cat $GADGET_BASE/*/UDC)"
+    cd /sys/class/udc
+    for D in *; do
+        case "$in_use" in
+            *"$D"*) ;;
+            *) echo "$D"; return 0 ;;
+        esac
+    done
+    return 1
 }
 
 usb_ms_insert()
 {
-	usb_insert "$1" mass_storage "$2" "$3"
+    usb_insert "$1" mass_storage "$2" "$3"
 }
 
 usb_ms_eject()
 {
-	usb_eject "$1" mass_storage
+    usb_eject "$1" mass_storage
 }
 
 ## $1: 	device syspath to provide usb-gadget configure,
@@ -81,49 +83,49 @@ usb_ms_eject()
 ##		if $2 not specified or illegal, then using 'usb-ro' as default
 usb_set_interface_type()
 {
-	local usb_gadget_syspath="$1"
-	local interface_type="${2:-'usb-ro'}"
+    local usb_gadget_syspath="$1"
+    local interface_type="${2:-'usb-ro'}"
 
-	# defining target variables to configure interface type
-	local removable=
-	local ro=
-	local cdrom=
+    # defining target variables to configure interface type
+    local removable=
+    local ro=
+    local cdrom=
 
-	if [ ! -d "${usb_gadget_syspath}" ]; then
-		echo "Device syspath ${usb_gadget_syspath} does not exist" >&2
-		return 1
-	fi
+    if [ ! -d "${usb_gadget_syspath}" ]; then
+        echo "Device syspath ${usb_gadget_syspath} does not exist" >&2
+        return 1
+    fi
 
-	case "${interface_type}" in
-		hdd)
-			removable=0
-			ro=0
-			cdrom=0
-			;;
-		usb)
-			removable=1
-			ro=0
-			cdrom=0
-			;;
+    case "${interface_type}" in
+        hdd)
+            removable=0
+            ro=0
+            cdrom=0
+            ;;
+        usb)
+            removable=1
+            ro=0
+            cdrom=0
+            ;;
 
-		cdrom)
-			removable=1
-			ro=1
-			cdrom=1
-			;;
-		usb-ro)
-			removable=1
-			ro=1
-			cdrom=0
-			;;
-		*)
-			echo "Unknown mass-storage interface type '${interface_type}' specified" >&2
-			echo "Configuring interface type as 'usb-ro'" >&2
-			removable=1
-			ro=1
-			cdrom=0
-			;;
-	esac
+        cdrom)
+            removable=1
+            ro=1
+            cdrom=1
+            ;;
+        usb-ro)
+            removable=1
+            ro=1
+            cdrom=0
+            ;;
+        *)
+            echo "Unknown mass-storage interface type '${interface_type}' specified" >&2
+            echo "Configuring interface type as 'usb-ro'" >&2
+            removable=1
+            ro=1
+            cdrom=0
+            ;;
+    esac
 
     echo $removable > "${usb_gadget_syspath}/removable"
     echo $ro > "${usb_gadget_syspath}/ro"
@@ -143,112 +145,115 @@ usb_set_interface_type()
 ##            it is the optional MAC address for the Host (default a random MAC)
 usb_insert()
 {
-	local name="$1"
-	local dev_type="$2"
-	local storage="$3"
-	local intf_type="$4"
-	local bmc_mac="$3"
-	local host_mac="$4"
+    local name="$1"
+    local dev_type="$2"
+    local storage="$3"
+    local intf_type="$4"
+    local bmc_mac="$3"
+    local host_mac="$4"
 
-	if [ -d "$GADGET_BASE/${name}" ]; then
-		echo "Device ${name} already exists" >&2
-		return 1
-	fi
-	mkdir "$GADGET_BASE/${name}"
-	cd "$GADGET_BASE/${name}"
+    if [ -d "$GADGET_BASE/${name}" ]; then
+        echo "Device ${name} already exists" >&2
+        return 1
+    fi
+    mkdir "$GADGET_BASE/${name}"
+    cd "$GADGET_BASE/${name}"
 
-	echo 0x1d6b > idVendor	# Linux Foundation
-	echo 0x0105 > idProduct # FunctionFS Gadget
-	mkdir strings/0x409
-	local machineid=$(cat /etc/machine-id)
-	local data="OpenBMC USB gadget device serial number"
-	local serial=$( echo -n "${machineid}${data}${machineid}" | \
-		sha256sum | cut -b 0-12 )
-	echo $serial > strings/0x409/serialnumber
-	echo OpenBMC > strings/0x409/manufacturer
-	echo "OpenBMC USB Device" > strings/0x409/product
+    echo 0x1d6b > idVendor	# Linux Foundation
+    echo 0x0105 > idProduct # FunctionFS Gadget
+    mkdir strings/0x409
+    local machineid
+    machineid=$(cat /etc/machine-id)
+    local data="OpenBMC USB gadget device serial number"
+    local serial
+    serial=$( echo -n "${machineid}${data}${machineid}" | \
+        sha256sum | cut -b 0-12 )
+    echo "$serial" > strings/0x409/serialnumber
+    echo "OpenBMC" > strings/0x409/manufacturer
+    echo "OpenBMC USB Device" > strings/0x409/product
 
-	gadget_function="functions/${dev_type}.${name}"
-	mkdir configs/c.1
-	mkdir "${gadget_function}"
-	case "${dev_type}" in
-		mass_storage)
-			# usb_set_interface_type handles default and unknown type
-			usb_set_interface_type "${gadget_function}/lun.0" "${intf_type}"
-			echo "${storage}" > "${gadget_function}/lun.0/file"
-			;;
-		ecm|eem|rndis)
-			echo "${bmc_mac}" > "${gadget_function}/dev_addr"
-			echo "${host_mac}" > "${gadget_function}/host_addr"
-			;;
-	esac
-	mkdir configs/c.1/strings/0x409
+    gadget_function="functions/${dev_type}.${name}"
+    mkdir configs/c.1
+    mkdir "${gadget_function}"
+    case "${dev_type}" in
+        mass_storage)
+            # usb_set_interface_type handles default and unknown type
+            usb_set_interface_type "${gadget_function}/lun.0" "${intf_type}"
+            echo "${storage}" > "${gadget_function}/lun.0/file"
+            ;;
+        ecm|eem|rndis)
+            echo "${bmc_mac}" > "${gadget_function}/dev_addr"
+            echo "${host_mac}" > "${gadget_function}/host_addr"
+            ;;
+    esac
+    mkdir configs/c.1/strings/0x409
 
-	echo "Conf 1" > configs/c.1/strings/0x409/configuration
-	echo 120 > configs/c.1/MaxPower
-	ln -s "${gadget_function}" configs/c.1
-	local dev=$(which_dev)
-	echo $dev > UDC
+    echo "Conf 1" > configs/c.1/strings/0x409/configuration
+    echo 120 > configs/c.1/MaxPower
+    ln -s "${gadget_function}" configs/c.1
+    local dev
+    dev=$(which_dev)
+    echo "$dev" > UDC
 }
 
 ## $1: device name, e.g. usb0, usb1
 ## $2: device type defined in kernel, e.g. mass_storage, ecm, eem, rndis
 usb_eject()
 {
-	local name="$1"
-	local dev_type="$2"
+    local name="$1"
+    local dev_type="$2"
 
-	echo '' > "$GADGET_BASE/${name}/UDC"
+    echo '' > "$GADGET_BASE/${name}/UDC"
 
-	rm -f "$GADGET_BASE/${name}/configs/c.1/${dev_type}.${name}"
-	rmdir "$GADGET_BASE/${name}/configs/c.1/strings/0x409"
-	rmdir "$GADGET_BASE/${name}/configs/c.1"
-	rmdir "$GADGET_BASE/${name}/functions/${dev_type}.${name}"
-	rmdir "$GADGET_BASE/${name}/strings/0x409"
-	rmdir "$GADGET_BASE/${name}"
+    rm -f "$GADGET_BASE/${name}/configs/c.1/${dev_type}.${name}"
+    rmdir "$GADGET_BASE/${name}/configs/c.1/strings/0x409"
+    rmdir "$GADGET_BASE/${name}/configs/c.1"
+    rmdir "$GADGET_BASE/${name}/functions/${dev_type}.${name}"
+    rmdir "$GADGET_BASE/${name}/strings/0x409"
+    rmdir "$GADGET_BASE/${name}"
 }
 
 usage()
 {
-	echo "Usage: $0 <action> ..."
-	echo "       $0 setup <file> <sizeMB>"
-	echo "       $0 insert <name> <file> [<type=usb|usb-ro|hdd|cdrom>]"
-	echo "       $0 eject <name>"
-	echo "       $0 mount <file> <mnt>"
-	echo "       $0 cleanup <file> <mnt>"
-	echo "       $0 ecm <name> <on|off> [<bmc-mac-address|.> [<host-mac-address>]]"
-	echo "       $0 eem <name> <on|off> [<bmc-mac-address|.> [<host-mac-address>]]"
-	echo "       $0 rndis <name> <on|off> [<bmc-mac-address|.> [<host-mac-address>]]"
-	exit 1
+    echo "Usage: $0 <action> ..."
+    echo "       $0 setup <file> <sizeMB>"
+    echo "       $0 insert <name> <file> [<type=usb|usb-ro|hdd|cdrom>]"
+    echo "       $0 eject <name>"
+    echo "       $0 mount <file> <mnt>"
+    echo "       $0 cleanup <file> <mnt>"
+    echo "       $0 ecm <name> <on|off> [<bmc-mac-address|.> [<host-mac-address>]]"
+    echo "       $0 eem <name> <on|off> [<bmc-mac-address|.> [<host-mac-address>]]"
+    echo "       $0 rndis <name> <on|off> [<bmc-mac-address|.> [<host-mac-address>]]"
+    exit 1
 }
 
-echo "$#: $0 $@"
+echo "$#: $0 $*"
 case "$1" in
-	insert)
-		shift
-		usb_ms_insert "$@"
-		;;
-	eject)
-		shift
-		usb_ms_eject "$@"
-		;;
-	setup)
-		shift
-		setup_image "$@"
-		;;
-	mount)
-		shift
-		mount_image "$@"
-		;;
-	cleanup)
-		shift
-		cleanup_image "$@"
-		;;
-	ecm|eem|rndis)
-		network "$@"
-		;;
-	*)
-		usage
-		;;
+    insert)
+        shift
+        usb_ms_insert "$@"
+        ;;
+    eject)
+        shift
+        usb_ms_eject "$@"
+        ;;
+    setup)
+        shift
+        setup_image "$@"
+        ;;
+    mount)
+        shift
+        mount_image "$@"
+        ;;
+    cleanup)
+        shift
+        cleanup_image "$@"
+        ;;
+    ecm|eem|rndis)
+        network "$@"
+        ;;
+    *)
+        usage
+        ;;
 esac
 exit $?
