@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b43e8fd9_2dc8aefd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000675
+      },
+      "writtenOn": "2022-12-05T11:41:03Z",
+      "side": 1,
+      "message": "As far as I can see, the `Unknown options: \"b_lundef, b_sanitize\"` issue (CI) still exists. \n\nThat origins from \n```\nmeson configure build -Db_sanitize\u003daddress,undefined -Db_lundef\u003dfalse \n```\n; options are incoming from [1]. \n\nAs far as I can remind the same issue we have in I562fbf0e9f19e38190174cc2b5cc64bfde182c8b (usb-ctrl: add RNDIS and EEM type support), but it has been solved by changing the meson project type (`cpp` to `c`).\n\nLooks like the hack doesn\u0027t work with current changes. \n\nIs the refinement of unit-test.py still required for the phosphor-misc?  \n\nLinks:\n1. https://github.com/openbmc/openbmc-build-scripts/blob/8e43efe72cf9fa890d9477765f0df5fc1d21f6ee/scripts/unit-test.py#L974",
+      "revId": "7c0805f4343eb4e652bc800fd4a15647cc36cc67",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
