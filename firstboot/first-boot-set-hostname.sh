@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-show_error() {
+function show_error() {
     if [ -n "${JOURNAL_STREAM-}" ]; then
         echo "$@" | systemd-cat -t first-boot-set-hostname -p emerg
     else
@@ -8,7 +8,7 @@ show_error() {
     fi
 }
 
-sync_hostname() {
+function sync_hostname() {
     MAPPER_IFACE='xyz.openbmc_project.ObjectMapper'
     MAPPER_PATH='/xyz/openbmc_project/object_mapper'
     INVENTORY_PATH='/xyz/openbmc_project/inventory'
