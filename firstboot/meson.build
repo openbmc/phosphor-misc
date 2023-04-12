@@ -13,7 +13,7 @@ if set_mac.found()
         output: 'first-boot-set-mac@.service',
         copy: true,
         install_dir:
-            set_mac.get_pkgconfig_variable('systemdsystemunitdir'),
+            set_mac.get_variable('systemdsystemunitdir'),
     )
 endif
 
@@ -29,6 +29,6 @@ if set_hostname.found()
         output: 'first-boot-set-hostname.service',
         copy: true,
         install_dir:
-            set_hostname.get_pkgconfig_variable('systemdsystemunitdir'),
+            set_hostname.get_variable('systemdsystemunitdir'),
     )
 endif

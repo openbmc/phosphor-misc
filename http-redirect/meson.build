@@ -19,7 +19,7 @@ if redirect.found()
             output: unit,
             copy: true,
             install_dir:
-                redirect.get_pkgconfig_variable('systemdsystemunitdir'),
+                redirect.get_variable('systemdsystemunitdir'),
         )
     endforeach
 endif
