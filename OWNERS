@@ -33,7 +33,7 @@
 
 owners:
 - bradleyb@fuzziesquirrel.com
-- i.kononenko@yadro.com
+- i.kononenko.@gmail.com
 
 reviewers:
 
@@ -44,5 +44,5 @@ openbmc:
   email: bradleyb@fuzziesquirrel.com
   discord: radsquirrel
 - name: Igor Kononenko
-  email: i.kononenko@yadro.com
+  email: i.kononenko.e@gmail.com
   discord: IK
