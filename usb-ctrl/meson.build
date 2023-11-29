@@ -1,4 +1,4 @@
-if get_option('usb-ctrl').enabled()
+if get_option('usb-ctrl').allowed()
     install_data(
         'usb-ctrl',
         install_mode: 'rwxr-xr-x',
