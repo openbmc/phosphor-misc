@@ -151,29 +151,49 @@ function usb_insert()
     local intf_type="$4"
     local bmc_mac="$3"
     local host_mac="$4"
-
-    if [ -d "$GADGET_BASE/${name}" ]; then
-        echo "Device ${name} already exists" >&2
-        return 1
-    fi
-    mkdir "$GADGET_BASE/${name}"
-    cd "$GADGET_BASE/${name}"
-
-    echo 0x1d6b > idVendor	# Linux Foundation
-    echo 0x0105 > idProduct # FunctionFS Gadget
-    mkdir strings/0x409
-    local machineid
-    machineid=$(cat /etc/machine-id)
-    local data="OpenBMC USB gadget device serial number"
-    local serial
-    serial=$( echo -n "${machineid}${data}${machineid}" | \
-        sha256sum | cut -b 0-12 )
-    echo "$serial" > strings/0x409/serialnumber
-    echo "OpenBMC" > strings/0x409/manufacturer
-    echo "OpenBMC USB Device" > strings/0x409/product
+    # By default, the gadget is not multifunctional
+    local is_multifunction=false
+    local gadget_function
+    local dev=
 
     gadget_function="functions/${dev_type}.${name}"
-    mkdir configs/c.1
+
+    # Checking whether the device is already attached
+    if [ -d "$GADGET_BASE/${name}" ]; then
+        # Checking whether requested function is attached 
+        if [ -d "$GADGET_BASE/${name}/${gadget_function}" ]; then
+            echo "Function ${dev_type}.${name} already exists" >&2
+            return 1
+        fi
+
+        # if the requested function is not configured but the device
+        # is connected, it is assumed that the device is multifunctional
+        is_multifunction=true
+    fi
+
+    if [ "${is_multifunction}" = false ]; then
+        mkdir "$GADGET_BASE/${name}"
+        cd "$GADGET_BASE/${name}"
+        echo 0x1d6b > idVendor	# Linux Foundation
+        echo 0x0104 > idProduct # Multifunction Composite Gadget
+
+        mkdir strings/0x409
+        local machineid
+        machineid=$(cat /etc/machine-id)
+        local data="OpenBMC USB gadget device serial number"
+        local serial
+        serial=$( echo -n "${machineid}${data}${machineid}" | \
+            sha256sum | cut -b 0-12 )
+        echo "$serial" > strings/0x409/serialnumber
+        echo "OpenBMC" > strings/0x409/manufacturer
+        echo "OpenBMC USB Device" > strings/0x409/product
+
+        mkdir configs/c.1
+    else
+        cd "$GADGET_BASE/${name}"
+        udc=$(cat "$GADGET_BASE/${name}/UDC")
+    fi
+
     mkdir "${gadget_function}"
     case "${dev_type}" in
         mass_storage)
@@ -186,13 +206,18 @@ function usb_insert()
             echo "${host_mac}" > "${gadget_function}/host_addr"
             ;;
     esac
-    mkdir configs/c.1/strings/0x409
+    if [ "${is_multifunction}" = false ]; then
+        mkdir configs/c.1/strings/0x409
 
-    echo "Conf 1" > configs/c.1/strings/0x409/configuration
-    echo 120 > configs/c.1/MaxPower
+        echo "Conf 1" > configs/c.1/strings/0x409/configuration
+        echo 120 > configs/c.1/MaxPower
+        dev=$(which_dev)
+    else
+        dev=$(cat "$GADGET_BASE/${name}/UDC")
+        # reattach UDC to reconfigure interface descriptors.
+        echo '' > UDC
+    fi
     ln -s "${gadget_function}" configs/c.1
-    local dev
-    dev=$(which_dev)
     echo "$dev" > UDC
 }
 
@@ -202,13 +227,27 @@ function usb_eject()
 {
     local name="$1"
     local dev_type="$2"
+    local func_cnt
+    local udc
+
+    func_cnt=$(find "$GADGET_BASE/${name}/functions/" -maxdepth 1 -mindepth 1 | wc -l)
+    udc=$(cat "$GADGET_BASE/${name}/UDC")
 
     echo '' > "$GADGET_BASE/${name}/UDC"
 
+    # remove function
     rm -f "$GADGET_BASE/${name}/configs/c.1/${dev_type}.${name}"
+    rmdir "$GADGET_BASE/${name}/functions/${dev_type}.${name}"
+
+    # check wether composite device is used
+    if [ "${func_cnt}" -gt 1 ]; then
+        # bring the device back online
+        echo "${udc}" > "$GADGET_BASE/${name}/UDC"
+        return 0;
+    fi
+
     rmdir "$GADGET_BASE/${name}/configs/c.1/strings/0x409"
     rmdir "$GADGET_BASE/${name}/configs/c.1"
-    rmdir "$GADGET_BASE/${name}/functions/${dev_type}.${name}"
     rmdir "$GADGET_BASE/${name}/strings/0x409"
     rmdir "$GADGET_BASE/${name}"
 }
