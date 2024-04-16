@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4e164f0_0dce4a67",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-04-16T00:47:40Z",
+      "side": 1,
+      "message": "-z says the string is empty ... but we seem to make the mulifunctioin composite gadget\n\nthe addition of this variable makes the flow harder to follow. Can you comment?",
+      "revId": "a4f9fc0fbe66fd3733c53b9a6d69fb2a97a03a42",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c9c4320_3cb6a185",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-04-16T00:47:40Z",
+      "side": 1,
+      "message": "missing \" around is_multifunction like above\n\nplease consder quotes around all command output; errors during command execution can cause unexpected data to be processed (0 or multiple words).",
+      "revId": "a4f9fc0fbe66fd3733c53b9a6d69fb2a97a03a42",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "152833a6_f3c4bb70",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-04-16T00:47:40Z",
+      "side": 1,
+      "message": "This dossn\u0027t leave it online, as we alread echo\u0027d an empty line above.  It may put it back online.",
+      "revId": "a4f9fc0fbe66fd3733c53b9a6d69fb2a97a03a42",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
