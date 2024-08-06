@@ -11,11 +11,11 @@ There might already be an implementation of the desired function or the
 community may suggest alternatives.
 
 phosphor-misc patches are reviewed using the Gerrit instance at
-https://gerrit.openbmc-project.xyz.
+<https://gerrit.openbmc-project.xyz>.
 
 Please submit patches to Gerrit. More information on using Gerrit can be found
 [here](https://github.com/openbmc/docs/blob/master/CONTRIBUTING.md#submitting-changes-via-gerrit-server).
-https://github.com/openbmc/phosphor-misc is a hosting mirror only and GitHub
+<https://github.com/openbmc/phosphor-misc> is a hosting mirror only and GitHub
 pull requests are not monitored and will not be accepted.
 
 Patch checklist. Please ensure patches adhere to the following guidelines:
