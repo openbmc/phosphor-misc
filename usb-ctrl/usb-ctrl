@@ -149,7 +149,7 @@ function usb_insert()
     local dev_type="$2"
     local storage="$3"
     local intf_type="$4"
-    local bmc_mac="$3"
+    local bmc_mac="${3:-"."}"
     local host_mac="$4"
     # By default, the gadget is not multifunctional
     local is_multifunction=false
@@ -202,8 +202,12 @@ function usb_insert()
             echo "${storage}" > "${gadget_function}/lun.0/file"
             ;;
         ecm|eem|rndis)
-            echo "${bmc_mac}" > "${gadget_function}/dev_addr"
-            echo "${host_mac}" > "${gadget_function}/host_addr"
+            if [[ "${bmc_mac}" != "." ]]; then
+                echo "${bmc_mac}" > "${gadget_function}/dev_addr"
+            fi
+            if [[ ! -z "${host_mac}" ]]; then
+                echo "${host_mac}" > "${gadget_function}/host_addr"
+            fi
             ;;
     esac
     if [ "${is_multifunction}" = false ]; then
