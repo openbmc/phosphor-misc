@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc8ca92a_0225c116",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-09-03T21:53:45Z",
+      "side": 0,
+      "message": "query does echo -n \"\" also fail?  looking, yes it will.  empty string is not NULL pointer for default random.",
+      "revId": "c5067a29009ff8e0b91f241c54b2539176cfb6b3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

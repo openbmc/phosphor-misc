@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a87b023_29e8b9b9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-09-03T21:53:45Z",
+      "side": 1,
+      "message": "the",
+      "revId": "9a657a0a3a920a91ecbcc1e81c1674c759b5826c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2323b078_e7776000",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-09-03T21:53:45Z",
+      "side": 1,
+      "message": "at least fix the change log typo.",
+      "revId": "9a657a0a3a920a91ecbcc1e81c1674c759b5826c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bb78da5_c6d6991f",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-09-03T21:53:45Z",
+      "side": 1,
+      "message": "this seems to be a hack to alias \"\" with . and later we have to undo this.   We also have to justify why the device and host MAC are treated differently.\n\nI\u0027d prefer we reverse the logic and leave it as passed in but recognize the . cheat separately.   the script can also be called with an explicit \"\" empty string.",
+      "revId": "9a657a0a3a920a91ecbcc1e81c1674c759b5826c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "219d98c7_cb6dfaec",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-09-03T21:53:45Z",
+      "side": 1,
+      "message": "see above this contrast requires too much thought.",
+      "revId": "9a657a0a3a920a91ecbcc1e81c1674c759b5826c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
