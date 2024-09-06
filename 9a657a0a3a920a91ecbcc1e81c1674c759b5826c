@@ -52,6 +52,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96aa2ce6_803f196b",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1001743
+      },
+      "writtenOn": "2024-09-06T09:37:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0bb78da5_c6d6991f",
+      "revId": "9a657a0a3a920a91ecbcc1e81c1674c759b5826c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "219d98c7_cb6dfaec",
@@ -65,6 +83,24 @@
       "writtenOn": "2024-09-03T21:53:45Z",
       "side": 1,
       "message": "see above this contrast requires too much thought.",
+      "revId": "9a657a0a3a920a91ecbcc1e81c1674c759b5826c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69706f18_52c0c641",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 3
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1001743
+      },
+      "writtenOn": "2024-09-06T09:37:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "219d98c7_cb6dfaec",
       "revId": "9a657a0a3a920a91ecbcc1e81c1674c759b5826c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
