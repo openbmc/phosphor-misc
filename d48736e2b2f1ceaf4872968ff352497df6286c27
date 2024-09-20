@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c67d1db9_d842d9bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-09-20T23:29:35Z",
+      "side": 1,
+      "message": "looks good, untested",
+      "revId": "d48736e2b2f1ceaf4872968ff352497df6286c27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4feeb6ec_3daa4430",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 4
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-09-20T23:29:35Z",
+      "side": 1,
+      "message": "thanks this looks better",
+      "revId": "d48736e2b2f1ceaf4872968ff352497df6286c27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "496162fd_ec208546",
+        "filename": "usb-ctrl/usb-ctrl",
+        "patchSetId": 4
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2024-09-20T23:29:35Z",
+      "side": 1,
+      "message": "while we don\u0027t have a current additional argument requiring a change it would be more consistent and future proof to make the same change here.\n\nbut I\u0027ll accept it without a change.",
+      "revId": "d48736e2b2f1ceaf4872968ff352497df6286c27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
