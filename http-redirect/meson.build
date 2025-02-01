@@ -8,18 +8,14 @@ if redirect.found()
         install_dir: get_option('bindir'),
     )
 
-    unit_files = [
-        'http-redirect.socket',
-        'http-redirect@.service'
-    ]
+    unit_files = ['http-redirect.socket', 'http-redirect@.service']
 
     foreach unit : unit_files
         configure_file(
             input: unit,
             output: unit,
             copy: true,
-            install_dir:
-                redirect.get_variable('systemdsystemunitdir'),
+            install_dir: redirect.get_variable('systemdsystemunitdir'),
         )
     endforeach
 endif
