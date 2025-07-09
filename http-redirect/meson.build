@@ -15,7 +15,7 @@ if redirect.found()
             input: unit,
             output: unit,
             copy: true,
-            install_dir: redirect.get_variable('systemdsystemunitdir'),
+            install_dir: redirect.get_variable('systemd_system_unit_dir'),
         )
     endforeach
 endif
