@@ -29,7 +29,7 @@ function sync_hostname() {
     BMC_ITEM_SERVICE=$(mapper get-service \
         "${BMC_ITEM_PATH}" 2>/dev/null || true)
 
-    if [[ -n "${BMC_ITEM_SERVICE}" ]]; then
+    if [[ -n "${BMC_ITEM_SERVICE}" && -n "${BMC_ITEM_PATH}" ]]; then
         BMC_SN=$(busctl get-property "${BMC_ITEM_SERVICE}" \
             "${BMC_ITEM_PATH}" "${INV_ASSET_IFACE}" SerialNumber)
         # 's "002B0DH1000"'
@@ -42,6 +42,7 @@ function sync_hostname() {
     if [[ -z "${BMC_SN}" ]] ; then
         show_error "BMC Serial Number empty! Setting Hostname as 'hostname + mac address' "
 
+        MAC_ADDR=''
         NETWORK_ITEM_IFACE='xyz.openbmc_project.Inventory.Item.NetworkInterface'
         NETWORK_ITEM_PATH=$(busctl --no-pager --verbose call \
                 ${MAPPER_IFACE} ${MAPPER_PATH} ${MAPPER_IFACE} \
@@ -54,23 +55,31 @@ function sync_hostname() {
 
         NETWORK_ITEM_OBJ=$(mapper get-service "${NETWORK_ITEM_PATH}" 2>/dev/null || true)
 
-        if [[ -z "${NETWORK_ITEM_OBJ}" ]]; then
-            show_error 'No Ethernet interface found in the Inventory. Unique hostname not set!'
-            exit 1
+        if [[ -n "${NETWORK_ITEM_OBJ}" && -n "${NETWORK_ITEM_PATH}" ]]; then
+            MAC_ADDR=$(busctl get-property "${NETWORK_ITEM_OBJ}" \
+                "${NETWORK_ITEM_PATH}" "${NETWORK_ITEM_IFACE}" MACAddress)
+            # 's "54:52:01:02:03:04"'
+            MAC_ADDR=${MAC_ADDR#*\"}
+            MAC_ADDR=${MAC_ADDR%\"*}
+        else
+            show_error 'No Ethernet interface found in the Inventory.'
         fi
 
-        MAC_ADDR=$(busctl get-property "${NETWORK_ITEM_OBJ}" \
-            "${NETWORK_ITEM_PATH}" "${NETWORK_ITEM_IFACE}" MACAddress)
+        if [[ -z "${MAC_ADDR}" ]] ; then
+            show_error "Ethernet interface inventory empty! Setting Hostname as 'hostname + env mac address' "
+            MAC_ADDR=$(fw_printenv ethaddr 2>/dev/null || true)
+            MAC_ADDR=${MAC_ADDR#*=}
+        fi
 
-        # 's "54:52:01:02:03:04"'
-        MAC_ADDR=${MAC_ADDR#*\"}
-        MAC_ADDR=${MAC_ADDR%\"*}
+        if [ -z "${MAC_ADDR}" ]; then
+            show_error 'No ethaddr found in the U-Boot env. Unique hostname not set!'
+            exit 1
+        fi
 
         hostnamectl set-hostname "$(hostname)-${MAC_ADDR}"
     else
         hostnamectl set-hostname "$(hostname)-${BMC_SN}"
     fi
-
 }
 
 sync_hostname
