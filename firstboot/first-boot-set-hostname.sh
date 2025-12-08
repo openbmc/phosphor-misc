@@ -76,9 +76,16 @@ function sync_hostname() {
             exit 1
         fi
 
-        hostnamectl set-hostname "$(hostname)-${MAC_ADDR}"
+        NEW_HOSTNAME="$(hostname)-${MAC_ADDR//:/}"
     else
-        hostnamectl set-hostname "$(hostname)-${BMC_SN}"
+        NEW_HOSTNAME="$(hostname)-${BMC_SN}"
+    fi
+
+    hostnamectl set-hostname "$NEW_HOSTNAME"
+
+    if grep -q "^127\.0\.1\.1" /etc/hosts; then
+        sed -i "s/^127\.0\.1\.1\s\+.*/127.0.1.1\t$NEW_HOSTNAME/" /etc/hosts
+        echo "/etc/hosts updated with 127.0.1.1 -> $NEW_HOSTNAME"
     fi
 }
 
