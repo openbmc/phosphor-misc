@@ -16,6 +16,24 @@
       "message": "Could You please provide steps to reproduce and verify the case?",
       "revId": "52895e6db4a60861f360301395004ab5563a0e26",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a5dd509_eb4c3a61",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001397
+      },
+      "writtenOn": "2025-12-12T22:39:02Z",
+      "side": 1,
+      "message": "Without this fix, the issue consistently reproduces as follows.\n\n```\n  root@qcom-bmc-ast2600-c00000ea3cf0:~# cat /etc/hostname \n  qcom-bmc-ast2600-c00000ea3cf0\n\n  root@qcom-bmc-ast2600-c00000ea3cf0:~# cat /etc/hosts\n  127.0.0.1       localhost\n\n  # The following lines are desirable for IPv6 capable hosts\n  ::1     localhost ip6-localhost ip6-loopback\n  fe00::0 ip6-localnet\n  ff00::0 ip6-mcastprefix\n  ff02::1 ip6-allnodes\n  ff02::2 ip6-allrouters\n  127.0.1.1 qcom-bmc-ast2600\n```\n\nWith this fix applied, the behavior changes as follows.\n\n```\n  root@qcom-bmc-ast2600-c00000ea3cf0:~# cat /etc/hostname \n  qcom-bmc-ast2600-c00000ea3cf0\n\n  root@qcom-bmc-ast2600-c00000ea3cf0:~# cat /etc/hosts\n  127.0.0.1       localhost\n\n  # The following lines are desirable for IPv6 capable hosts\n  ::1     localhost ip6-localhost ip6-loopback\n  fe00::0 ip6-localnet\n  ff00::0 ip6-mcastprefix\n  ff02::1 ip6-allnodes\n  ff02::2 ip6-allrouters\n  127.0.1.1 qcom-bmc-ast2600-c00000ea3cf0\n```\n\nI added it to the commit message as a \u0027Tested\u0027 section.",
+      "parentUuid": "46d2c712_160d68db",
+      "revId": "52895e6db4a60861f360301395004ab5563a0e26",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
