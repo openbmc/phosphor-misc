@@ -87,6 +87,12 @@ function sync_hostname() {
         sed -i "s/^127\.0\.1\.1\s\+.*/127.0.1.1\t$NEW_HOSTNAME/" /etc/hosts
         echo "/etc/hosts updated with 127.0.1.1 -> $NEW_HOSTNAME"
     fi
+
+    for svc in avahi-daemon.service systemd-resolved.service; do
+        if systemctl is-enabled "$svc" >/dev/null 2>&1; then
+            systemctl restart "$svc"
+        fi
+    done
 }
 
 sync_hostname
