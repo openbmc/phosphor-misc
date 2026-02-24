@@ -23,7 +23,7 @@ function sync_mac() {
         2>/dev/null | grep -c "${INVENTORY_PATH}" || true)
 
     if [ "$NETWORK_ITEM_PATH_COUNT" -gt 1 ]; then
-        # If there are more than 2 NETOWRK ITEM and path must contain $1
+        # If there are more than 2 NETWORK ITEM and path must contain $1
         # for finding the right NETWORK ITEM
         NETWORK_ITEM_PATH=$(busctl --no-pager --verbose call \
                 ${MAPPER_IFACE} ${MAPPER_PATH} ${MAPPER_IFACE} \

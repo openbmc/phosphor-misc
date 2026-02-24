@@ -49,15 +49,15 @@ method == "" {
 	next
 }
 
-# Header lines start with a token and have a : seperator.  Implied LWS is
-# allowed around the : seperator.  LWS at the beginning and end can be removed.
+# Header lines start with a token and have a : separator.  Implied LWS is
+# allowed around the : separator.  LWS at the beginning and end can be removed.
 match($0, /[ \t]*:[ \t]*/) {
 	header = substr($0, 1, RSTART - 1)
 	content = substr($0, RSTART + RLENGTH)
 	sub(/[ \t]*$/, "", content)
 
 	# Field names are a single token.  LWS is impled allowed at the
-	# : seperator.  Any beginning or trailing LWS is not significant.
+	# : separator.  Any beginning or trailing LWS is not significant.
 	if (!is_token(header))
 		respond_error(400)
 
@@ -65,7 +65,7 @@ match($0, /[ \t]*:[ \t]*/) {
 	header = toupper(header)
 
 	# RFC2616 4.2 multiple instances of a headers is only valid for for
-	# comma separated lists.  Remove any trailing LWS, add ", " seperator.
+	# comma separated lists.  Remove any trailing LWS, add ", " separator.
 	prior = ""
 	if (header in headers)
 		prior = headers[header] ", "
@@ -178,7 +178,7 @@ function validate_path_and_respond(host, path)
 
 function is_token(token)
 {
-	# US ASCII (0-127) excluding CTL (000-037, 177, SP (040), seperators
+	# US ASCII (0-127) excluding CTL (000-037, 177, SP (040), separators
 	if (match(token, /[^\041-\176]/) ||
 		match(token, /[()<>@,;:\/[]?=\{\}" \t/))
 		return 0
@@ -386,7 +386,7 @@ function respond_and_exit(response, content, URI)
 		content = ""
 	}
 
-	# Final trace before changing line endings visual seperation
+	# Final trace before changing line endings visual separation
 	trace("")
 
 	# Respond with protocol and response, prepared location from above,
