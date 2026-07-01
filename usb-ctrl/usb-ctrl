@@ -183,7 +183,7 @@ function usb_insert()
         local data="OpenBMC USB gadget device serial number"
         local serial
         serial=$( echo -n "${machineid}${data}${machineid}" | \
-            sha256sum | cut -b 0-12 )
+            sha256sum | cut -b 1-12 )
         echo "$serial" > strings/0x409/serialnumber
         echo "OpenBMC" > strings/0x409/manufacturer
         echo "OpenBMC USB Device" > strings/0x409/product
